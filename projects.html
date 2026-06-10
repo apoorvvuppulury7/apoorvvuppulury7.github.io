@@ -4,108 +4,144 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects — Apoorv Vuppulury</title>
+  <meta name="description" content="Full project details — Apoorv Vuppulury, Electronics & Communication Engineering, BITS Pilani Hyderabad." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
-
-  <!-- Paste your entire <style> block from index.html here -->
-  <!-- Then add any project-page-specific styles below: -->
   <style>
-    /* ── Copy the full <style> block from index.html above this line ── */
+    :root,[data-theme="dark"]{
+      --bg:#0c0e0c;--surface:#111411;--surface-2:#161a16;--surface-3:#1c211c;
+      --border:rgba(0,255,136,0.10);--border-dim:rgba(255,255,255,0.05);
+      --text:#dde8dd;--text-muted:#7a9a7a;--text-faint:#344a34;
+      --primary:#00ff88;--primary-dim:#00cc6a;--primary-faint:rgba(0,255,136,0.07);
+      --primary-glow:0 0 16px rgba(0,255,136,0.3);--amber:#ffb300;
+      --mono:"JetBrains Mono","Courier New",monospace;
+      --sans:"Inter",system-ui,sans-serif;
+      --ease:180ms cubic-bezier(0.16,1,0.3,1);
+      --content:960px;--r:6px;
+      --t-xs:.72rem;--t-sm:.85rem;--t-base:.9375rem;--t-lg:1.125rem;
+      --t-xl:clamp(1.5rem,3vw,2.25rem);--t-hero:clamp(2.8rem,7vw,6rem);
+    }
+    [data-theme="light"]{
+      --bg:#f2f5f2;--surface:#eaeeea;--surface-2:#e2e7e2;--surface-3:#d8dfd8;
+      --border:rgba(0,100,50,0.15);--border-dim:rgba(0,0,0,0.06);
+      --text:#141e14;--text-muted:#3a5a3a;--text-faint:#90a890;
+      --primary:#007a40;--primary-dim:#005e30;--primary-faint:rgba(0,122,64,0.07);
+      --primary-glow:0 0 10px rgba(0,122,64,0.2);--amber:#b07000;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:4.5rem;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:var(--t-base);line-height:1.65;min-height:100dvh;overflow-x:hidden;transition:background var(--ease),color var(--ease)}
+    a{color:inherit;text-decoration:none}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+    ul{list-style:none}
+    :focus-visible{outline:1px solid var(--primary);outline-offset:3px;border-radius:3px}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-    /* Project detail page extras */
-    .proj-hero {
-      padding: clamp(4rem, 10vw, 6rem) 1.5rem clamp(2rem, 4vw, 3rem);
-      max-width: var(--content);
-      margin-inline: auto;
-    }
-    .back-link {
-      font-family: var(--mono);
-      font-size: var(--t-xs);
-      color: var(--text-muted);
-      letter-spacing: .05em;
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      margin-bottom: 2rem;
-      transition: color var(--ease);
-    }
-    .back-link:hover { color: var(--primary); }
+    /* grid bg */
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(var(--border-dim) 1px,transparent 1px),linear-gradient(90deg,var(--border-dim) 1px,transparent 1px);
+      background-size:48px 48px;
+      mask-image:radial-gradient(ellipse 90% 50% at 50% 0%,black 20%,transparent 100%)}
 
-    .proj-entry {
-      max-width: var(--content);
-      margin-inline: auto;
-      padding: 2.5rem 1.5rem;
-      scroll-margin-top: 5rem; /* accounts for sticky header */
-    }
-    .proj-entry + .proj-entry {
-      border-top: 1px solid var(--border-dim);
-    }
-    .proj-title {
-      font-family: var(--mono);
-      font-size: var(--t-xl);
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -.02em;
-      margin-bottom: .5rem;
-    }
-    .proj-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    .proj-body {
-      color: var(--text-muted);
-      line-height: 1.8;
-      max-width: 72ch;
-    }
-    .proj-body p + p { margin-top: 1rem; }
-    .proj-body h4 {
-      font-family: var(--mono);
-      font-size: var(--t-sm);
-      color: var(--primary);
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      margin: 1.5rem 0 .5rem;
-    }
-    .proj-body ul {
-      list-style: disc;
-      padding-left: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: .4rem;
-    }
-    .proj-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .75rem;
-      margin-top: 1.5rem;
+    /* HEADER */
+    .hdr{position:sticky;top:0;z-index:100;border-bottom:1px solid transparent;transition:background var(--ease),border-color var(--ease)}
+    .hdr.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom-color:var(--border)}
+    .hdr__inner{max-width:var(--content);margin-inline:auto;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .logo{font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);display:flex;align-items:center}
+    .logo__cursor{display:inline-block;width:8px;height:1.1em;background:var(--primary);animation:blink 1.1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .nav{display:flex;align-items:center;gap:1.4rem}
+    .nav a{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;transition:color var(--ease)}
+    .nav a:hover,.nav a.active{color:var(--primary)}
+    .hdr__actions{display:flex;align-items:center;gap:.75rem}
+    .theme-btn{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);padding:.2rem .5rem;border:1px solid var(--border-dim);border-radius:3px;transition:color var(--ease),border-color var(--ease)}
+    .theme-btn:hover{color:var(--primary);border-color:var(--border)}
+    .btn-cv{font-family:var(--mono);font-size:var(--t-xs);padding:.4rem 1rem;border:1px solid var(--primary);border-radius:var(--r);background:var(--primary-faint);color:var(--primary);letter-spacing:.05em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease)}
+    .btn-cv:hover{background:rgba(0,255,136,0.14);box-shadow:var(--primary-glow)}
+    .mobile-btn{display:none;color:var(--text-muted);font-size:1.2rem;padding:.25rem}
+    .mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);z-index:99}
+    .mobile-nav.open{display:flex;flex-direction:column}
+    .mobile-nav a{font-family:var(--mono);font-size:var(--t-sm);padding:1rem 1.5rem;color:var(--text-muted);border-bottom:1px solid var(--border-dim);transition:color var(--ease)}
+    .mobile-nav a:hover{color:var(--primary)}
+
+    /* LAYOUT */
+    .wrap{max-width:var(--content);margin-inline:auto;padding:clamp(3rem,8vw,5rem) 1.5rem;position:relative;z-index:1}
+    .divider{border:none;border-top:1px solid var(--border-dim);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
+    .sec-label{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+    .sec-label::before{content:"//";color:var(--text-faint)}
+    .sec-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:clamp(2rem,4vw,3rem)}
+
+    /* CHIPS */
+    .chips{display:flex;flex-wrap:wrap;gap:.25rem}
+    .chip{font-family:var(--mono);font-size:var(--t-xs);padding:2px .5rem;background:var(--surface-2);border:1px solid var(--border-dim);border-radius:3px;color:var(--text-muted)}
+
+    /* BUTTONS */
+    .btn-primary{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;background:var(--primary);color:var(--bg);border:1px solid var(--primary);border-radius:var(--r);font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease);display:inline-block}
+    .btn-primary:hover{background:var(--primary-dim);box-shadow:var(--primary-glow)}
+    .btn-outline{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;border:1px solid var(--border);border-radius:var(--r);color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;transition:color var(--ease),border-color var(--ease);display:inline-block}
+    .btn-outline:hover{color:var(--primary);border-color:var(--border)}
+
+    /* FOOTER */
+    .footer{max-width:var(--content);margin-inline:auto;padding:2rem 1.5rem;border-top:1px solid var(--border-dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:1}
+    .footer__copy{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
+    .footer__status{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);display:flex;align-items:center;gap:.5rem}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);animation:pulse 2.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    /* FADE */
+    .fade{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+    .fade.visible{opacity:1;transform:none}
+
+    /* ── PROJECTS PAGE ── */
+    .proj-hero{padding:clamp(4rem,10vw,6rem) 1.5rem clamp(1.5rem,3vw,2rem);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
+    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2rem;transition:color var(--ease)}
+    .back-link:hover{color:var(--primary)}
+
+    .proj-entry{max-width:var(--content);margin-inline:auto;padding:clamp(2rem,5vw,3rem) 1.5rem;position:relative;z-index:1;scroll-margin-top:5.5rem}
+    .proj-entry::before{content:"";position:absolute;left:0;top:clamp(2rem,5vw,3rem);bottom:clamp(2rem,5vw,3rem);width:2px;background:var(--text-faint);border-radius:2px;transition:background var(--ease),box-shadow var(--ease)}
+    .proj-entry:hover::before{background:var(--primary);box-shadow:var(--primary-glow)}
+
+    .proj-category{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+    .proj-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:.9rem}
+    .proj-meta-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:1.75rem}
+
+    .proj-body{color:var(--text-muted);line-height:1.8;max-width:72ch}
+    .proj-body p+p{margin-top:1rem}
+    .proj-body h4{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.1em;text-transform:uppercase;margin:1.75rem 0 .6rem}
+    .proj-body ul{display:flex;flex-direction:column;gap:.5rem;padding-left:0}
+    .proj-body ul li{padding-left:1.2rem;position:relative;color:var(--text-muted)}
+    .proj-body ul li::before{content:"›";position:absolute;left:0;color:var(--primary);font-family:var(--mono)}
+    .proj-body code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 5px;border-radius:3px}
+
+    .proj-links{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+
+    /* RESPONSIVE */
+    @media(max-width:720px){
+      .nav,.btn-cv{display:none}
+      .mobile-btn{display:block}
     }
   </style>
 </head>
 <body>
 
-<!-- HEADER (identical to index.html — nav links point back to index) -->
+<!-- ═══ HEADER ═══ -->
 <header class="hdr" id="hdr">
-  <div class="hdrinner">
-    <div class="logo">
-      <a href="index.html" style="color:inherit">apoorv</a>
-      <span class="logo-cursor"></span>
-    </div>
+  <div class="hdr__inner">
+    <div class="logo">apoorv@portfolio<span class="logo__cursor"></span></div>
     <nav class="nav" aria-label="Primary">
       <a href="index.html#about">about</a>
       <a href="index.html#skills">skills</a>
-      <a href="projects.html">projects</a>
+      <a href="projects.html" class="active">projects</a>
       <a href="index.html#experience">experience</a>
       <a href="index.html#contact">contact</a>
     </nav>
-    <div class="hdractions">
-      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">light</button>
-      <a href="" class="btn-cv" target="_blank" rel="noopener noreferrer">Resume</a>
+    <div class="hdr__actions">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">[ light ]</button>
+      <button class="mobile-btn" id="mobileBtn" aria-label="Open menu">&#9776;</button>
+      <!-- PLACEHOLDER: Replace # with your hosted resume PDF or Drive link -->
+      <a href="#" class="btn-cv" target="_blank" rel="noopener noreferrer">Resume ↗</a>
     </div>
-    <button class="mobile-btn" id="mobileBtn" aria-label="Open menu">&#9776;</button>
   </div>
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
     <a href="index.html#about">about</a>
@@ -117,17 +153,21 @@
 </header>
 
 <main id="main">
-  <div class="proj-hero wrap fade">
+
+  <!-- ═══ PAGE HERO ═══ -->
+  <div class="proj-hero fade">
     <a href="index.html" class="back-link">← back to home</a>
     <p class="sec-label">projects</p>
     <h1 class="sec-title">Things I've built</h1>
   </div>
 
-  <!-- ═══════════════════════════════════════════ -->
-  <!--  PROJECT 1                                  -->
-  <!-- ═══════════════════════════════════════════ -->
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PROJECT 1 — Asynchronous FIFO          -->
+  <!-- ═══════════════════════════════════════ -->
   <section class="proj-entry fade" id="async-fifo">
-    <span class="card-meta">VLSI · RTL</span>
+    <p class="proj-category">VLSI · RTL</p>
     <h2 class="proj-title">Asynchronous FIFO</h2>
     <div class="proj-meta-row">
       <span class="chip">Verilog</span>
@@ -136,102 +176,267 @@
     </div>
     <div class="proj-body">
       <p>
-        CDC FIFO with Gray-coded pointers and dual flip-flop synchronizers to
-        eliminate metastability across asynchronous clock domains. FSM-based
-        handshake for reliable single-word transfers.
+        A CDC FIFO design that safely transfers data between two asynchronous clock domains.
+        Gray-coded read/write pointers ensure only a single bit changes per increment, eliminating
+        multi-bit metastability transitions when the pointers are synchronised across domains.
       </p>
-      <h4>Key Details</h4>
+      <h4>Architecture</h4>
       <ul>
-        <li>Gray-code pointer arithmetic to prevent multi-bit transitions during synchronization</li>
-        <li>Dual flip-flop synchronizer chain on both read and write pointer paths</li>
-        <li>FSM-based handshake protocol for safe single-word data transfers</li>
-        <li>Verified via timing simulation and functional waveform checks in Xilinx Vivado</li>
+        <li>Gray-code pointer arithmetic on both read and write sides to prevent multi-bit transitions</li>
+        <li>Dual flip-flop synchroniser chain on each pointer path to safely cross clock domains</li>
+        <li>FSM-based handshake protocol for reliable single-word data transfers</li>
+        <li>Full/empty flag generation derived from synchronised Gray-coded pointers</li>
       </ul>
-      <!-- Add more context, results, images, diagrams as needed -->
+      <h4>Verification</h4>
+      <ul>
+        <li>Functional simulation in Xilinx Vivado with corner-case timing stress tests</li>
+        <li>Waveform inspection of metastability windows under asymmetric clock ratios</li>
+      </ul>
     </div>
     <div class="proj-links">
-      <!-- Replace # with your actual GitHub repo link -->
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+      <!-- PLACEHOLDER: Replace # with your GitHub repo URL -->
+      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo ↗</a>
     </div>
   </section>
 
-  <hr class="divider" />
+  <hr class="divider">
 
-  <!-- ═══════════════════════════════════════════ -->
-  <!--  PROJECT 2                                  -->
-  <!-- ═══════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PROJECT 2 — Pipelined RISC-V Processor -->
+  <!-- ═══════════════════════════════════════ -->
   <section class="proj-entry fade" id="riscv">
-    <span class="card-meta">Architecture · RTL</span>
+    <p class="proj-category">Architecture · RTL</p>
     <h2 class="proj-title">Pipelined RISC-V Processor</h2>
     <div class="proj-meta-row">
       <span class="chip">Verilog</span>
-      <span class="chip">Vivado</span>
+      <span class="chip">Xilinx Vivado</span>
       <span class="chip">Computer Architecture</span>
     </div>
     <div class="proj-body">
       <p>
-        5-stage pipelined RISC processor with full datapath, control logic,
-        hazard detection, and data forwarding. Custom R/I/J-type ISA; verified
-        via waveform simulation in Xilinx Vivado.
+        A 5-stage pipelined RISC processor implementing a custom 32-bit ISA with R, I, and J-type
+        instruction formats. The design covers the full processor datapath including hazard detection
+        and data forwarding to keep the pipeline stall-free for most instruction sequences.
       </p>
-      <h4>Key Details</h4>
+      <h4>Pipeline Stages</h4>
       <ul>
-        <li>IF → ID → EX → MEM → WB pipeline with full forwarding paths</li>
-        <li>Static branch prediction and flush logic for control hazards</li>
-        <li>Custom 32-bit R/I/J-type ISA with 20+ instructions</li>
-        <li>Waveform-verified against a hand-crafted test program</li>
+        <li><code>IF</code> — Instruction fetch with PC update logic and branch flush</li>
+        <li><code>ID</code> — Register file read, immediate decode, and control signal generation</li>
+        <li><code>EX</code> — ALU execution with full MUX-based forwarding from MEM and WB stages</li>
+        <li><code>MEM</code> — Data memory read/write with load-use stall detection</li>
+        <li><code>WB</code> — Register writeback with forwarding path outputs</li>
+      </ul>
+      <h4>Hazard Handling</h4>
+      <ul>
+        <li>Data forwarding from EX/MEM and MEM/WB pipeline registers to EX inputs</li>
+        <li>Load-use stall via pipeline register freeze and bubble insertion</li>
+        <li>Static branch prediction (predict-not-taken) with flush on misprediction</li>
+      </ul>
+      <h4>Verification</h4>
+      <ul>
+        <li>Waveform simulation in Xilinx Vivado against a hand-crafted assembly test program</li>
+        <li>Confirmed correct forwarding, stall, and flush behaviour across all hazard classes</li>
       </ul>
     </div>
     <div class="proj-links">
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+      <!-- PLACEHOLDER: Replace # with your GitHub repo URL -->
+      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo ↗</a>
     </div>
   </section>
 
-  <hr class="divider" />
+  <hr class="divider">
 
-  <!-- Repeat the same pattern for the remaining 4 projects -->
-  <!-- id="leo-routing", id="star-ris", id="coverage-hole", id="collision-avoidance" -->
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PROJECT 3 — ML & QoS-Aware LEO Routing -->
+  <!-- ═══════════════════════════════════════ -->
+  <section class="proj-entry fade" id="leo-routing">
+    <p class="proj-category">Networks · ML</p>
+    <h2 class="proj-title">ML &amp; QoS-Aware LEO Routing</h2>
+    <div class="proj-meta-row">
+      <span class="chip">Python</span>
+      <span class="chip">DQN</span>
+      <span class="chip">GNN</span>
+      <span class="chip">LEO</span>
+    </div>
+    <div class="proj-body">
+      <p>
+        An ML-driven routing framework for Low Earth Orbit (LEO) inter-satellite networks that
+        combines Deep Q-Networks for adaptive path selection with Graph Neural Networks for
+        topology-aware state representation. The system dynamically responds to link congestion
+        and latency changes in a highly mobile satellite constellation.
+      </p>
+      <h4>Key Contributions</h4>
+      <ul>
+        <li>DQN agent trained on simulated LEO topology with QoS reward shaping (delay + satisfaction)</li>
+        <li>GNN-based state encoder captures multi-hop neighbourhood topology for each routing decision</li>
+        <li>5–8% QoS satisfaction gain over benchmark shortest-path and load-balanced routing methods</li>
+        <li>30–50 ms end-to-end delay reduction under high-traffic constellation scenarios</li>
+      </ul>
+      <h4>Implementation</h4>
+      <ul>
+        <li>Custom LEO network environment built in Python with configurable constellation parameters</li>
+        <li>PyTorch-based DQN with experience replay and target network stabilisation</li>
+        <li>GNN topology encoder using message-passing aggregation over inter-satellite link graph</li>
+      </ul>
+    </div>
+    <div class="proj-links">
+      <!-- PLACEHOLDER: Replace # with report / GitHub URL -->
+      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Report / Repo ↗</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PROJECT 4 — STAR-RIS Resource Alloc    -->
+  <!-- ═══════════════════════════════════════ -->
+  <section class="proj-entry fade" id="star-ris">
+    <p class="proj-category">6G · Comms Research</p>
+    <h2 class="proj-title">STAR-RIS Resource Allocation</h2>
+    <div class="proj-meta-row">
+      <span class="chip">MATLAB</span>
+      <span class="chip">STAR-RIS</span>
+      <span class="chip">6G</span>
+    </div>
+    <div class="proj-body">
+      <p>
+        A mathematical framework for joint resource allocation in Simultaneous Transmitting and
+        Reflecting RIS (STAR-RIS) assisted networks operating under the MS (Mode-Switching) protocol.
+        The work derives closed-form analytical bounds that quantify the trade-off between phase
+        configuration error and element allocation between transmission and reflection.
+      </p>
+      <h4>Key Contributions</h4>
+      <ul>
+        <li>Formulated a joint optimisation problem for element splitting, beamforming, and power allocation</li>
+        <li>Derived analytical upper and lower bounds on achievable data rate under phase-error constraints</li>
+        <li>Demonstrated above-benchmark data-rate performance versus conventional RIS and baseline schemes</li>
+        <li>Quantified saturation behaviour of rate gain as the number of STAR-RIS elements increases</li>
+      </ul>
+      <h4>Tools &amp; Methods</h4>
+      <ul>
+        <li>MATLAB for numerical evaluation of derived bounds and Monte Carlo channel averaging</li>
+        <li>Convex relaxation and successive convex approximation (SCA) for iterative optimisation</li>
+      </ul>
+    </div>
+    <div class="proj-links">
+      <!-- PLACEHOLDER: Replace # with paper draft / report URL -->
+      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Paper Draft ↗</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PROJECT 5 — Smart Coverage Hole        -->
+  <!-- ═══════════════════════════════════════ -->
+  <section class="proj-entry fade" id="coverage-hole">
+    <p class="proj-category">Wireless · Simulation</p>
+    <h2 class="proj-title">Smart Coverage Hole Remediation</h2>
+    <div class="proj-meta-row">
+      <span class="chip">MATLAB</span>
+      <span class="chip">Stochastic Geometry</span>
+      <span class="chip">Beamforming</span>
+    </div>
+    <div class="proj-body">
+      <p>
+        A MATLAB-based stochastic network simulator that models base station and user distributions
+        using Poisson Point Processes (PPP) to analytically characterise SINR distributions and
+        identify coverage holes. A greedy STAR-RIS placement algorithm is then applied to remediate
+        detected holes using passive beamforming.
+      </p>
+      <h4>Simulation Pipeline</h4>
+      <ul>
+        <li>PPP-based random network generation with configurable BS density and path-loss exponents</li>
+        <li>SINR mapping across the service area using stochastic geometry-derived expressions</li>
+        <li>Coverage-hole detection via threshold-based SINR classification on the spatial grid</li>
+        <li>Greedy STAR-RIS placement algorithm that maximises coverage gain per additional unit</li>
+      </ul>
+      <h4>Results</h4>
+      <ul>
+        <li>Coverage raised from ~55% to 100% using only two strategically placed STAR-RIS units</li>
+        <li>Validated that greedy placement achieves near-optimal coverage with minimal computational cost</li>
+      </ul>
+    </div>
+    <div class="proj-links">
+      <!-- PLACEHOLDER: Replace # with project report URL -->
+      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Project Report ↗</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PROJECT 6 — Embedded Collision Avoid.  -->
+  <!-- ═══════════════════════════════════════ -->
+  <section class="proj-entry fade" id="collision-avoidance">
+    <p class="proj-category">Embedded · Vision</p>
+    <h2 class="proj-title">Embedded Collision Avoidance</h2>
+    <div class="proj-meta-row">
+      <span class="chip">Python</span>
+      <span class="chip">OpenCV</span>
+      <span class="chip">Jetson Nano</span>
+    </div>
+    <div class="proj-body">
+      <p>
+        An embedded vision platform that performs real-time onboard obstacle detection and triggers
+        autonomous evasive manoeuvres. The system runs entirely at the edge — no offboard compute —
+        using an OpenCV-based image processing pipeline distributed across a Raspberry Pi and an
+        NVIDIA Jetson Nano.
+      </p>
+      <h4>System Architecture</h4>
+      <ul>
+        <li>Raspberry Pi handles peripheral I/O, motor control signals, and low-level sensor interfacing</li>
+        <li>NVIDIA Jetson Nano runs the compute-intensive OpenCV detection pipeline using GPU acceleration</li>
+        <li>Inter-board communication over UART for low-latency evasion trigger signals</li>
+        <li>Frame-differencing and contour detection used to identify and localise obstacles in real time</li>
+      </ul>
+      <h4>Performance</h4>
+      <ul>
+        <li>Detection-to-evasion latency kept below real-time requirements for mobile platform speeds</li>
+        <li>Robust to varying ambient lighting through adaptive thresholding in the preprocessing stage</li>
+      </ul>
+    </div>
+    <div class="proj-links">
+      <!-- PLACEHOLDER: Replace # with report / repo URL -->
+      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Report / Repo ↗</a>
+    </div>
+  </section>
 
 </main>
 
 <footer class="footer">
-  <span class="footer-copy">© 2026 Apoorv Vuppulury · BITS Pilani Hyderabad</span>
-  <span class="footer-status"><span class="status-dot"></span>online</span>
+  <span class="footer__copy">© 2026 Apoorv Vuppulury · BITS Pilani Hyderabad</span>
+  <span class="footer__status"><span class="status-dot"></span>online</span>
 </footer>
 
 <script>
-  // Theme toggle (same as index.html)
+  // Theme toggle
   const root = document.documentElement;
-  const themeBtn = document.getElementById('themeBtn');
+  const themeBtn = document.getElementById("themeBtn");
   let dark = true;
-  function applyTheme() {
-    root.setAttribute('data-theme', dark ? 'dark' : 'light');
-    themeBtn.textContent = dark ? 'light' : 'dark';
-  }
+  function applyTheme(){ root.setAttribute("data-theme", dark ? "dark" : "light"); themeBtn.textContent = dark ? "[ light ]" : "[ dark ]"; }
   applyTheme();
-  themeBtn.addEventListener('click', () => { dark = !dark; applyTheme(); });
+  themeBtn.addEventListener("click", () => { dark = !dark; applyTheme(); });
 
   // Sticky header
-  const hdr = document.getElementById('hdr');
-  window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 24), { passive: true });
+  const hdr = document.getElementById("hdr");
+  window.addEventListener("scroll", () => hdr.classList.toggle("scrolled", scrollY > 24), {passive:true});
 
   // Mobile nav
-  const mobileBtn = document.getElementById('mobileBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  mobileBtn.addEventListener('click', () => {
-    const o = mobileNav.classList.toggle('open');
-    mobileBtn.setAttribute('aria-expanded', String(o));
+  const mobileBtn = document.getElementById("mobileBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  mobileBtn.addEventListener("click", () => {
+    const o = mobileNav.classList.toggle("open");
+    mobileBtn.setAttribute("aria-expanded", String(o));
   });
-  mobileNav.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => mobileNav.classList.remove('open'))
-  );
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
 
   // Scroll fade-in
-  const io = new IntersectionObserver(entries =>
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
-    { threshold: 0.06 }
-  );
-  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, {threshold: 0.06});
+  document.querySelectorAll(".fade").forEach(el => io.observe(el));
 </script>
+
 </body>
 </html>
