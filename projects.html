@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects — Apoorv Vuppulury</title>
-  <meta name="description" content="Full project details — Apoorv Vuppulury, Electronics & Communication Engineering, BITS Pilani Hyderabad." />
+  <meta name="description" content="Projects — Apoorv Vuppulury, Electronics & Communication Engineering, BITS Pilani Hyderabad." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
@@ -72,15 +72,30 @@
     .sec-label::before{content:"//";color:var(--text-faint)}
     .sec-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:clamp(2rem,4vw,3rem)}
 
-    /* CHIPS */
-    .chips{display:flex;flex-wrap:wrap;gap:.25rem}
+    /* CARDS — identical to index.html */
+    .card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+    .card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.5rem;display:flex;flex-direction:column;gap:.75rem;transition:border-color var(--ease),box-shadow var(--ease);position:relative;overflow:hidden}
+    .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--text-faint);transition:background var(--ease),box-shadow var(--ease)}
+    .card:hover{border-color:var(--border);box-shadow:0 0 24px rgba(0,255,136,.06)}
+    .card:hover::before{background:var(--primary);box-shadow:var(--primary-glow)}
+    .card__head{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+    .card__title{font-family:var(--mono);font-size:var(--t-lg);font-weight:700;color:var(--text)}
+    .card__meta{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
+    .card__desc{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7;flex:1}
+    .card__footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-top:.25rem}
+    .card__chips{display:flex;flex-wrap:wrap;gap:.25rem}
     .chip{font-family:var(--mono);font-size:var(--t-xs);padding:2px .5rem;background:var(--surface-2);border:1px solid var(--border-dim);border-radius:3px;color:var(--text-muted)}
+    .read-more{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.04em;white-space:nowrap;display:flex;align-items:center;gap:.25rem;transition:gap var(--ease)}
+    .read-more:hover{gap:.5rem}
 
-    /* BUTTONS */
-    .btn-primary{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;background:var(--primary);color:var(--bg);border:1px solid var(--primary);border-radius:var(--r);font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease);display:inline-block}
-    .btn-primary:hover{background:var(--primary-dim);box-shadow:var(--primary-glow)}
-    .btn-outline{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;border:1px solid var(--border);border-radius:var(--r);color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;transition:color var(--ease),border-color var(--ease);display:inline-block}
-    .btn-outline:hover{color:var(--primary);border-color:var(--border)}
+    /* CATEGORY BLOCK */
+    .cat-block{margin-bottom:clamp(2rem,4vw,3rem)}
+    .cat-label{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    .cat-label::before{content:"#";color:var(--primary)}
+
+    /* BACK LINK */
+    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2.5rem;transition:color var(--ease)}
+    .back-link:hover{color:var(--primary)}
 
     /* FOOTER */
     .footer{max-width:var(--content);margin-inline:auto;padding:2rem 1.5rem;border-top:1px solid var(--border-dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:1}
@@ -93,33 +108,11 @@
     .fade{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
     .fade.visible{opacity:1;transform:none}
 
-    /* ── PROJECTS PAGE ── */
-    .proj-hero{padding:clamp(4rem,10vw,6rem) 1.5rem clamp(1.5rem,3vw,2rem);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
-    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2rem;transition:color var(--ease)}
-    .back-link:hover{color:var(--primary)}
-
-    .proj-entry{max-width:var(--content);margin-inline:auto;padding:clamp(2rem,5vw,3rem) 1.5rem;position:relative;z-index:1;scroll-margin-top:5.5rem}
-    .proj-entry::before{content:"";position:absolute;left:0;top:clamp(2rem,5vw,3rem);bottom:clamp(2rem,5vw,3rem);width:2px;background:var(--text-faint);border-radius:2px;transition:background var(--ease),box-shadow var(--ease)}
-    .proj-entry:hover::before{background:var(--primary);box-shadow:var(--primary-glow)}
-
-    .proj-category{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
-    .proj-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:.9rem}
-    .proj-meta-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:1.75rem}
-
-    .proj-body{color:var(--text-muted);line-height:1.8;max-width:72ch}
-    .proj-body p+p{margin-top:1rem}
-    .proj-body h4{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.1em;text-transform:uppercase;margin:1.75rem 0 .6rem}
-    .proj-body ul{display:flex;flex-direction:column;gap:.5rem;padding-left:0}
-    .proj-body ul li{padding-left:1.2rem;position:relative;color:var(--text-muted)}
-    .proj-body ul li::before{content:"›";position:absolute;left:0;color:var(--primary);font-family:var(--mono)}
-    .proj-body code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 5px;border-radius:3px}
-
-    .proj-links{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
-
     /* RESPONSIVE */
     @media(max-width:720px){
       .nav,.btn-cv{display:none}
       .mobile-btn{display:block}
+      .card-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -153,255 +146,144 @@
 </header>
 
 <main id="main">
-
-  <!-- ═══ PAGE HERO ═══ -->
-  <div class="proj-hero fade">
+  <section class="wrap fade">
     <a href="index.html" class="back-link">← back to home</a>
     <p class="sec-label">projects</p>
     <h1 class="sec-title">Things I've built</h1>
-  </div>
 
-  <hr class="divider">
+    <!-- ═══ CATEGORY: Computer Architecture & VLSI ═══ -->
+    <div class="cat-block">
+      <p class="cat-label">Computer Architecture &amp; VLSI</p>
+      <div class="card-grid">
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- PROJECT 1 — Asynchronous FIFO          -->
-  <!-- ═══════════════════════════════════════ -->
-  <section class="proj-entry fade" id="async-fifo">
-    <p class="proj-category">VLSI · RTL</p>
-    <h2 class="proj-title">Asynchronous FIFO</h2>
-    <div class="proj-meta-row">
-      <span class="chip">Verilog</span>
-      <span class="chip">Xilinx Vivado</span>
-      <span class="chip">CDC</span>
+        <div class="card">
+          <div class="card__head">
+            <h3 class="card__title">Asynchronous FIFO</h3>
+            <span class="card__meta">VLSI · RTL</span>
+          </div>
+          <p class="card__desc">
+            CDC FIFO with Gray-coded pointers and dual flip-flop synchronizers to eliminate metastability across asynchronous clock domains.
+            FSM-based handshake for reliable single-word transfers.
+          </p>
+          <div class="card__footer">
+            <div class="card__chips">
+              <span class="chip">Verilog</span><span class="chip">Xilinx Vivado</span><span class="chip">CDC</span>
+            </div>
+            <!-- PLACEHOLDER: Replace async-fifo.html with your subpage filename -->
+            <a href="projects/async-fifo.html" class="read-more">read more →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head">
+            <h3 class="card__title">Pipelined RISC-V Processor</h3>
+            <span class="card__meta">Architecture · RTL</span>
+          </div>
+          <p class="card__desc">
+            5-stage pipelined RISC processor with full datapath, control logic, hazard detection, and data forwarding.
+            Custom R/I/J-type ISA; verified via waveform simulation in Xilinx Vivado.
+          </p>
+          <div class="card__footer">
+            <div class="card__chips">
+              <span class="chip">Verilog</span><span class="chip">Vivado</span><span class="chip">Computer Architecture</span>
+            </div>
+            <!-- PLACEHOLDER: Replace riscv.html with your subpage filename -->
+            <a href="projects/riscv.html" class="read-more">read more →</a>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="proj-body">
-      <p>
-        A CDC FIFO design that safely transfers data between two asynchronous clock domains.
-        Gray-coded read/write pointers ensure only a single bit changes per increment, eliminating
-        multi-bit metastability transitions when the pointers are synchronised across domains.
-      </p>
-      <h4>Architecture</h4>
-      <ul>
-        <li>Gray-code pointer arithmetic on both read and write sides to prevent multi-bit transitions</li>
-        <li>Dual flip-flop synchroniser chain on each pointer path to safely cross clock domains</li>
-        <li>FSM-based handshake protocol for reliable single-word data transfers</li>
-        <li>Full/empty flag generation derived from synchronised Gray-coded pointers</li>
-      </ul>
-      <h4>Verification</h4>
-      <ul>
-        <li>Functional simulation in Xilinx Vivado with corner-case timing stress tests</li>
-        <li>Waveform inspection of metastability windows under asymmetric clock ratios</li>
-      </ul>
+
+    <!-- ═══ CATEGORY: Embedded Systems ═══ -->
+    <div class="cat-block">
+      <p class="cat-label">Embedded Systems</p>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="card__head">
+            <h3 class="card__title">Embedded Collision Avoidance</h3>
+            <span class="card__meta">Embedded · Vision</span>
+          </div>
+          <p class="card__desc">
+            Embedded vision platform on Raspberry Pi and NVIDIA Jetson Nano for onboard autonomous obstacle detection and evasive action triggering
+            using an OpenCV-based real-time image processing pipeline.
+          </p>
+          <div class="card__footer">
+            <div class="card__chips">
+              <span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">Jetson Nano</span>
+            </div>
+            <!-- PLACEHOLDER: Replace collision-avoidance.html with your subpage filename -->
+            <a href="projects/collision-avoidance.html" class="read-more">read more →</a>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="proj-links">
-      <!-- PLACEHOLDER: Replace # with your GitHub repo URL -->
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo ↗</a>
+
+    <!-- ═══ CATEGORY: Wireless Communications ═══ -->
+    <div class="cat-block">
+      <p class="cat-label">Wireless Communications</p>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="card__head">
+            <h3 class="card__title">ML &amp; QoS-Aware LEO Routing</h3>
+            <span class="card__meta">Networks · ML</span>
+          </div>
+          <p class="card__desc">
+            DQN-based adaptive path selection and GNN-based topology representation for LEO inter-satellite networks.
+            5–8% satisfaction gain and 30–50 ms delay reduction over benchmark routing methods.
+          </p>
+          <div class="card__footer">
+            <div class="card__chips">
+              <span class="chip">Python</span><span class="chip">DQN</span><span class="chip">GNN</span><span class="chip">LEO</span>
+            </div>
+            <!-- PLACEHOLDER: Replace leo-routing.html with your subpage filename -->
+            <a href="projects/leo-routing.html" class="read-more">read more →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head">
+            <h3 class="card__title">STAR-RIS Resource Allocation</h3>
+            <span class="card__meta">6G · Comms Research</span>
+          </div>
+          <p class="card__desc">
+            Mathematical model for resource allocation in STAR-RIS-assisted MS-protocol networks.
+            Derived analytical bounds quantifying phase-error vs. element-allocation trade-offs for above-benchmark data-rate performance.
+          </p>
+          <div class="card__footer">
+            <div class="card__chips">
+              <span class="chip">MATLAB</span><span class="chip">STAR-RIS</span><span class="chip">6G</span>
+            </div>
+            <!-- PLACEHOLDER: Replace star-ris.html with your subpage filename -->
+            <a href="projects/star-ris.html" class="read-more">read more →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head">
+            <h3 class="card__title">Smart Coverage Hole Remediation</h3>
+            <span class="card__meta">Wireless · Simulation</span>
+          </div>
+          <p class="card__desc">
+            MATLAB stochastic network simulator using Poisson Point Processes for SINR mapping and coverage-hole detection.
+            Greedy STAR-RIS beamforming placement raised coverage from ~55% to 100% with only two RIS units.
+          </p>
+          <div class="card__footer">
+            <div class="card__chips">
+              <span class="chip">MATLAB</span><span class="chip">Stochastic Geometry</span><span class="chip">Beamforming</span>
+            </div>
+            <!-- PLACEHOLDER: Replace coverage-hole.html with your subpage filename -->
+            <a href="projects/coverage-hole.html" class="read-more">read more →</a>
+          </div>
+        </div>
+
+      </div>
     </div>
+
   </section>
-
-  <hr class="divider">
-
-  <!-- ═══════════════════════════════════════ -->
-  <!-- PROJECT 2 — Pipelined RISC-V Processor -->
-  <!-- ═══════════════════════════════════════ -->
-  <section class="proj-entry fade" id="riscv">
-    <p class="proj-category">Architecture · RTL</p>
-    <h2 class="proj-title">Pipelined RISC-V Processor</h2>
-    <div class="proj-meta-row">
-      <span class="chip">Verilog</span>
-      <span class="chip">Xilinx Vivado</span>
-      <span class="chip">Computer Architecture</span>
-    </div>
-    <div class="proj-body">
-      <p>
-        A 5-stage pipelined RISC processor implementing a custom 32-bit ISA with R, I, and J-type
-        instruction formats. The design covers the full processor datapath including hazard detection
-        and data forwarding to keep the pipeline stall-free for most instruction sequences.
-      </p>
-      <h4>Pipeline Stages</h4>
-      <ul>
-        <li><code>IF</code> — Instruction fetch with PC update logic and branch flush</li>
-        <li><code>ID</code> — Register file read, immediate decode, and control signal generation</li>
-        <li><code>EX</code> — ALU execution with full MUX-based forwarding from MEM and WB stages</li>
-        <li><code>MEM</code> — Data memory read/write with load-use stall detection</li>
-        <li><code>WB</code> — Register writeback with forwarding path outputs</li>
-      </ul>
-      <h4>Hazard Handling</h4>
-      <ul>
-        <li>Data forwarding from EX/MEM and MEM/WB pipeline registers to EX inputs</li>
-        <li>Load-use stall via pipeline register freeze and bubble insertion</li>
-        <li>Static branch prediction (predict-not-taken) with flush on misprediction</li>
-      </ul>
-      <h4>Verification</h4>
-      <ul>
-        <li>Waveform simulation in Xilinx Vivado against a hand-crafted assembly test program</li>
-        <li>Confirmed correct forwarding, stall, and flush behaviour across all hazard classes</li>
-      </ul>
-    </div>
-    <div class="proj-links">
-      <!-- PLACEHOLDER: Replace # with your GitHub repo URL -->
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo ↗</a>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ═══════════════════════════════════════ -->
-  <!-- PROJECT 3 — ML & QoS-Aware LEO Routing -->
-  <!-- ═══════════════════════════════════════ -->
-  <section class="proj-entry fade" id="leo-routing">
-    <p class="proj-category">Networks · ML</p>
-    <h2 class="proj-title">ML &amp; QoS-Aware LEO Routing</h2>
-    <div class="proj-meta-row">
-      <span class="chip">Python</span>
-      <span class="chip">DQN</span>
-      <span class="chip">GNN</span>
-      <span class="chip">LEO</span>
-    </div>
-    <div class="proj-body">
-      <p>
-        An ML-driven routing framework for Low Earth Orbit (LEO) inter-satellite networks that
-        combines Deep Q-Networks for adaptive path selection with Graph Neural Networks for
-        topology-aware state representation. The system dynamically responds to link congestion
-        and latency changes in a highly mobile satellite constellation.
-      </p>
-      <h4>Key Contributions</h4>
-      <ul>
-        <li>DQN agent trained on simulated LEO topology with QoS reward shaping (delay + satisfaction)</li>
-        <li>GNN-based state encoder captures multi-hop neighbourhood topology for each routing decision</li>
-        <li>5–8% QoS satisfaction gain over benchmark shortest-path and load-balanced routing methods</li>
-        <li>30–50 ms end-to-end delay reduction under high-traffic constellation scenarios</li>
-      </ul>
-      <h4>Implementation</h4>
-      <ul>
-        <li>Custom LEO network environment built in Python with configurable constellation parameters</li>
-        <li>PyTorch-based DQN with experience replay and target network stabilisation</li>
-        <li>GNN topology encoder using message-passing aggregation over inter-satellite link graph</li>
-      </ul>
-    </div>
-    <div class="proj-links">
-      <!-- PLACEHOLDER: Replace # with report / GitHub URL -->
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Report / Repo ↗</a>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ═══════════════════════════════════════ -->
-  <!-- PROJECT 4 — STAR-RIS Resource Alloc    -->
-  <!-- ═══════════════════════════════════════ -->
-  <section class="proj-entry fade" id="star-ris">
-    <p class="proj-category">6G · Comms Research</p>
-    <h2 class="proj-title">STAR-RIS Resource Allocation</h2>
-    <div class="proj-meta-row">
-      <span class="chip">MATLAB</span>
-      <span class="chip">STAR-RIS</span>
-      <span class="chip">6G</span>
-    </div>
-    <div class="proj-body">
-      <p>
-        A mathematical framework for joint resource allocation in Simultaneous Transmitting and
-        Reflecting RIS (STAR-RIS) assisted networks operating under the MS (Mode-Switching) protocol.
-        The work derives closed-form analytical bounds that quantify the trade-off between phase
-        configuration error and element allocation between transmission and reflection.
-      </p>
-      <h4>Key Contributions</h4>
-      <ul>
-        <li>Formulated a joint optimisation problem for element splitting, beamforming, and power allocation</li>
-        <li>Derived analytical upper and lower bounds on achievable data rate under phase-error constraints</li>
-        <li>Demonstrated above-benchmark data-rate performance versus conventional RIS and baseline schemes</li>
-        <li>Quantified saturation behaviour of rate gain as the number of STAR-RIS elements increases</li>
-      </ul>
-      <h4>Tools &amp; Methods</h4>
-      <ul>
-        <li>MATLAB for numerical evaluation of derived bounds and Monte Carlo channel averaging</li>
-        <li>Convex relaxation and successive convex approximation (SCA) for iterative optimisation</li>
-      </ul>
-    </div>
-    <div class="proj-links">
-      <!-- PLACEHOLDER: Replace # with paper draft / report URL -->
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Paper Draft ↗</a>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ═══════════════════════════════════════ -->
-  <!-- PROJECT 5 — Smart Coverage Hole        -->
-  <!-- ═══════════════════════════════════════ -->
-  <section class="proj-entry fade" id="coverage-hole">
-    <p class="proj-category">Wireless · Simulation</p>
-    <h2 class="proj-title">Smart Coverage Hole Remediation</h2>
-    <div class="proj-meta-row">
-      <span class="chip">MATLAB</span>
-      <span class="chip">Stochastic Geometry</span>
-      <span class="chip">Beamforming</span>
-    </div>
-    <div class="proj-body">
-      <p>
-        A MATLAB-based stochastic network simulator that models base station and user distributions
-        using Poisson Point Processes (PPP) to analytically characterise SINR distributions and
-        identify coverage holes. A greedy STAR-RIS placement algorithm is then applied to remediate
-        detected holes using passive beamforming.
-      </p>
-      <h4>Simulation Pipeline</h4>
-      <ul>
-        <li>PPP-based random network generation with configurable BS density and path-loss exponents</li>
-        <li>SINR mapping across the service area using stochastic geometry-derived expressions</li>
-        <li>Coverage-hole detection via threshold-based SINR classification on the spatial grid</li>
-        <li>Greedy STAR-RIS placement algorithm that maximises coverage gain per additional unit</li>
-      </ul>
-      <h4>Results</h4>
-      <ul>
-        <li>Coverage raised from ~55% to 100% using only two strategically placed STAR-RIS units</li>
-        <li>Validated that greedy placement achieves near-optimal coverage with minimal computational cost</li>
-      </ul>
-    </div>
-    <div class="proj-links">
-      <!-- PLACEHOLDER: Replace # with project report URL -->
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Project Report ↗</a>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ═══════════════════════════════════════ -->
-  <!-- PROJECT 6 — Embedded Collision Avoid.  -->
-  <!-- ═══════════════════════════════════════ -->
-  <section class="proj-entry fade" id="collision-avoidance">
-    <p class="proj-category">Embedded · Vision</p>
-    <h2 class="proj-title">Embedded Collision Avoidance</h2>
-    <div class="proj-meta-row">
-      <span class="chip">Python</span>
-      <span class="chip">OpenCV</span>
-      <span class="chip">Jetson Nano</span>
-    </div>
-    <div class="proj-body">
-      <p>
-        An embedded vision platform that performs real-time onboard obstacle detection and triggers
-        autonomous evasive manoeuvres. The system runs entirely at the edge — no offboard compute —
-        using an OpenCV-based image processing pipeline distributed across a Raspberry Pi and an
-        NVIDIA Jetson Nano.
-      </p>
-      <h4>System Architecture</h4>
-      <ul>
-        <li>Raspberry Pi handles peripheral I/O, motor control signals, and low-level sensor interfacing</li>
-        <li>NVIDIA Jetson Nano runs the compute-intensive OpenCV detection pipeline using GPU acceleration</li>
-        <li>Inter-board communication over UART for low-latency evasion trigger signals</li>
-        <li>Frame-differencing and contour detection used to identify and localise obstacles in real time</li>
-      </ul>
-      <h4>Performance</h4>
-      <ul>
-        <li>Detection-to-evasion latency kept below real-time requirements for mobile platform speeds</li>
-        <li>Robust to varying ambient lighting through adaptive thresholding in the preprocessing stage</li>
-      </ul>
-    </div>
-    <div class="proj-links">
-      <!-- PLACEHOLDER: Replace # with report / repo URL -->
-      <a href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">Report / Repo ↗</a>
-    </div>
-  </section>
-
 </main>
 
 <footer class="footer">
