@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pipelined RISC-V Processor — Apoorv Vuppulury</title>
+  <meta name="description" content="5-stage pipelined RISC-V processor — full datapath, hazard detection, data forwarding. Verilog, Xilinx Vivado." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+  <style>
+
+    :root,[data-theme="dark"]{
+      --bg:#0c0e0c;--surface:#111411;--surface-2:#161a16;--surface-3:#1c211c;
+      --border:rgba(0,255,136,0.10);--border-dim:rgba(255,255,255,0.05);
+      --text:#dde8dd;--text-muted:#7a9a7a;--text-faint:#344a34;
+      --primary:#00ff88;--primary-dim:#00cc6a;--primary-faint:rgba(0,255,136,0.07);
+      --primary-glow:0 0 16px rgba(0,255,136,0.3);--amber:#ffb300;
+      --mono:"JetBrains Mono","Courier New",monospace;
+      --sans:"Inter",system-ui,sans-serif;
+      --ease:180ms cubic-bezier(0.16,1,0.3,1);
+      --content:960px;--r:6px;
+      --t-xs:.72rem;--t-sm:.85rem;--t-base:.9375rem;--t-lg:1.125rem;
+      --t-xl:clamp(1.5rem,3vw,2.25rem);--t-hero:clamp(2.8rem,7vw,6rem);
+    }
+    [data-theme="light"]{
+      --bg:#f2f5f2;--surface:#eaeeea;--surface-2:#e2e7e2;--surface-3:#d8dfd8;
+      --border:rgba(0,100,50,0.15);--border-dim:rgba(0,0,0,0.06);
+      --text:#141e14;--text-muted:#3a5a3a;--text-faint:#90a890;
+      --primary:#007a40;--primary-dim:#005e30;--primary-faint:rgba(0,122,64,0.07);
+      --primary-glow:0 0 10px rgba(0,122,64,0.2);--amber:#b07000;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:4.5rem;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:var(--t-base);line-height:1.65;min-height:100dvh;overflow-x:hidden;transition:background var(--ease),color var(--ease)}
+    a{color:inherit;text-decoration:none}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+    ul{list-style:none}
+    :focus-visible{outline:1px solid var(--primary);outline-offset:3px;border-radius:3px}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+    /* grid bg */
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(var(--border-dim) 1px,transparent 1px),linear-gradient(90deg,var(--border-dim) 1px,transparent 1px);
+      background-size:48px 48px;
+      mask-image:radial-gradient(ellipse 90% 50% at 50% 0%,black 20%,transparent 100%)}
+
+    /* HEADER */
+    .hdr{position:sticky;top:0;z-index:100;border-bottom:1px solid transparent;transition:background var(--ease),border-color var(--ease)}
+    .hdr.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom-color:var(--border)}
+    .hdr__inner{max-width:var(--content);margin-inline:auto;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .logo{font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);display:flex;align-items:center}
+    .logo__cursor{display:inline-block;width:8px;height:1.1em;background:var(--primary);animation:blink 1.1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .nav{display:flex;align-items:center;gap:1.4rem}
+    .nav a{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;transition:color var(--ease)}
+    .nav a:hover,.nav a.active{color:var(--primary)}
+    .hdr__actions{display:flex;align-items:center;gap:.75rem}
+    .theme-btn{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);padding:.2rem .5rem;border:1px solid var(--border-dim);border-radius:3px;transition:color var(--ease),border-color var(--ease)}
+    .theme-btn:hover{color:var(--primary);border-color:var(--border)}
+    .btn-cv{font-family:var(--mono);font-size:var(--t-xs);padding:.4rem 1rem;border:1px solid var(--primary);border-radius:var(--r);background:var(--primary-faint);color:var(--primary);letter-spacing:.05em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease)}
+    .btn-cv:hover{background:rgba(0,255,136,0.14);box-shadow:var(--primary-glow)}
+    .mobile-btn{display:none;color:var(--text-muted);font-size:1.2rem;padding:.25rem}
+    .mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);z-index:99}
+    .mobile-nav.open{display:flex;flex-direction:column}
+    .mobile-nav a{font-family:var(--mono);font-size:var(--t-sm);padding:1rem 1.5rem;color:var(--text-muted);border-bottom:1px solid var(--border-dim);transition:color var(--ease)}
+    .mobile-nav a:hover{color:var(--primary)}
+
+    /* LAYOUT */
+    .wrap{max-width:var(--content);margin-inline:auto;padding:clamp(3rem,8vw,5rem) 1.5rem;position:relative;z-index:1}
+    .divider{border:none;border-top:1px solid var(--border-dim);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
+    .sec-label{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+    .sec-label::before{content:"//";color:var(--text-faint)}
+    .sec-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:clamp(2rem,4vw,3rem)}
+
+    /* CARDS — identical to index.html */
+    .card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+    .card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.5rem;display:flex;flex-direction:column;gap:.75rem;transition:border-color var(--ease),box-shadow var(--ease);position:relative;overflow:hidden}
+    .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--text-faint);transition:background var(--ease),box-shadow var(--ease)}
+    .card:hover{border-color:var(--border);box-shadow:0 0 24px rgba(0,255,136,.06)}
+    .card:hover::before{background:var(--primary);box-shadow:var(--primary-glow)}
+    .card__head{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+    .card__title{font-family:var(--mono);font-size:var(--t-lg);font-weight:700;color:var(--text)}
+    .card__meta{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
+    .card__desc{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7;flex:1}
+    .card__footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-top:.25rem}
+    .card__chips{display:flex;flex-wrap:wrap;gap:.25rem}
+    .chip{font-family:var(--mono);font-size:var(--t-xs);padding:2px .5rem;background:var(--surface-2);border:1px solid var(--border-dim);border-radius:3px;color:var(--text-muted)}
+    .read-more{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.04em;white-space:nowrap;display:flex;align-items:center;gap:.25rem;transition:gap var(--ease)}
+    .read-more:hover{gap:.5rem}
+
+    /* CATEGORY BLOCK */
+    .cat-block{margin-bottom:clamp(2rem,4vw,3rem)}
+    .cat-label{font-family:var(--mono);font-size:var(--t-lg);font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+    .cat-label::before{content:"#";color:var(--primary)}
+
+    /* BACK LINK */
+    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2.5rem;transition:color var(--ease)}
+    .back-link:hover{color:var(--primary)}
+
+    /* FOOTER */
+    .footer{max-width:var(--content);margin-inline:auto;padding:2rem 1.5rem;border-top:1px solid var(--border-dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:1}
+    .footer__copy{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
+    .footer__status{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);display:flex;align-items:center;gap:.5rem}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);animation:pulse 2.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    /* FADE */
+    .fade{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+    .fade.visible{opacity:1;transform:none}
+
+    /* RESPONSIVE */
+    @media(max-width:720px){
+      .nav,.btn-cv{display:none}
+      .mobile-btn{display:block}
+      .card-grid{grid-template-columns:1fr}
+    }
+  
+
+    /* ── SUBPAGE EXTRAS ── */
+    .proj-wrap{max-width:var(--content);margin-inline:auto;padding:clamp(3rem,8vw,5rem) 1.5rem;position:relative;z-index:1}
+
+    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2.5rem;transition:color var(--ease)}
+    .back-link:hover{color:var(--primary)}
+
+    .proj-header{margin-bottom:clamp(2rem,4vw,3rem)}
+    .proj-category{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+    .proj-title{font-family:var(--mono);font-size:var(--t-hero);font-weight:800;line-height:.95;letter-spacing:-.04em;color:var(--text);margin-bottom:1.25rem}
+    .proj-title .hl{color:var(--primary)}
+    .proj-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+    .tag{font-family:var(--mono);font-size:var(--t-xs);padding:.2rem .7rem;background:var(--primary-faint);border:1px solid var(--border);border-radius:3px;color:var(--primary);letter-spacing:.04em}
+    .tag.muted{background:transparent;color:var(--text-muted);border-color:var(--border-dim)}
+    .proj-desc{font-size:var(--t-base);color:var(--text-muted);max-width:60ch;line-height:1.8;margin-bottom:2rem}
+    .proj-cta{display:flex;gap:.75rem;flex-wrap:wrap}
+    .btn-primary{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;background:var(--primary);color:var(--bg);border:1px solid var(--primary);border-radius:var(--r);font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease);display:inline-block}
+    .btn-primary:hover{background:var(--primary-dim);box-shadow:var(--primary-glow)}
+    .btn-outline{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;border:1px solid var(--border);border-radius:var(--r);color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;transition:color var(--ease),border-color var(--ease);display:inline-block}
+    .btn-outline:hover{color:var(--primary);border-color:var(--border)}
+
+    /* CONTENT SECTIONS */
+    .content-section{margin-bottom:clamp(2.5rem,5vw,4rem)}
+    .content-section .sec-label{margin-bottom:.5rem}
+    .content-section .sec-title{font-family:var(--mono);font-size:var(--t-lg);font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:1.25rem}
+
+    /* BODY TEXT */
+    .body-text{color:var(--text-muted);line-height:1.8;max-width:72ch;font-size:var(--t-base)}
+    .body-text p+p{margin-top:1rem}
+    .body-text code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 5px;border-radius:3px}
+
+    /* PIPELINE DIAGRAM */
+    .pipeline{display:flex;align-items:stretch;gap:0;margin:1.5rem 0;overflow-x:auto;padding-bottom:.5rem}
+    .pipe-stage{background:var(--surface);border:1px solid var(--border-dim);padding:1rem .75rem;min-width:100px;display:flex;flex-direction:column;align-items:center;gap:.4rem;position:relative;transition:border-color var(--ease),box-shadow var(--ease);flex:1}
+    .pipe-stage:not(:last-child)::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);z-index:1}
+    .pipe-stage:hover{border-color:var(--border);box-shadow:0 0 16px rgba(0,255,136,.07)}
+    .pipe-stage .stage-id{font-family:var(--mono);font-size:var(--t-lg);font-weight:800;color:var(--primary)}
+    .pipe-stage .stage-name{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;text-align:center}
+    .pipe-stage .stage-desc{font-size:var(--t-xs);color:var(--text-muted);text-align:center;line-height:1.5;margin-top:.25rem}
+
+    /* DETAIL CARDS GRID */
+    .detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:1rem}
+    .detail-card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.25rem 1.5rem;position:relative;overflow:hidden;transition:border-color var(--ease),box-shadow var(--ease)}
+    .detail-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--text-faint);transition:background var(--ease),box-shadow var(--ease)}
+    .detail-card:hover{border-color:var(--border);box-shadow:0 0 20px rgba(0,255,136,.06)}
+    .detail-card:hover::before{background:var(--primary);box-shadow:var(--primary-glow)}
+    .detail-card .dc-icon{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.08em;margin-bottom:.6rem}
+    .detail-card .dc-title{font-family:var(--mono);font-size:var(--t-sm);font-weight:700;color:var(--text);margin-bottom:.5rem}
+    .detail-card .dc-body{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7}
+    .detail-card .dc-body code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 4px;border-radius:3px}
+
+    /* BULLET LIST */
+    .bullet-list{display:flex;flex-direction:column;gap:.55rem;padding:0;margin-top:.5rem}
+    .bullet-list li{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7;padding-left:1.2rem;position:relative}
+    .bullet-list li::before{content:"›";position:absolute;left:0;color:var(--primary);font-family:var(--mono)}
+    .bullet-list li code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 4px;border-radius:3px}
+
+    /* RESPONSIVE */
+    @media(max-width:720px){
+      .nav,.btn-cv{display:none}
+      .mobile-btn{display:block}
+      .pipeline{gap:.25rem}
+      .pipe-stage .stage-desc{display:none}
+      .detail-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="hdr__inner">
+    <div class="logo">apoorv@portfolio<span class="logo__cursor"></span></div>
+    <nav class="nav" aria-label="Primary">
+      <a href="../index.html#about">about</a>
+      <a href="../index.html#skills">skills</a>
+      <a href="../projects.html" class="active">projects</a>
+      <a href="../index.html#experience">experience</a>
+      <a href="../index.html#contact">contact</a>
+    </nav>
+    <div class="hdr__actions">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">[ light ]</button>
+      <button class="mobile-btn" id="mobileBtn" aria-label="Open menu">&#9776;</button>
+      <!-- PLACEHOLDER: Replace # with your hosted resume PDF or Drive link -->
+      <a href="#" class="btn-cv" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <a href="../index.html#about">about</a>
+    <a href="../index.html#skills">skills</a>
+    <a href="../projects.html">projects</a>
+    <a href="../index.html#experience">experience</a>
+    <a href="../index.html#contact">contact</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="proj-wrap">
+
+  <a href="../projects.html" class="back-link fade">← all projects</a>
+
+  <!-- ═══ HERO ═══ -->
+  <div class="proj-header fade">
+    <p class="proj-category">Computer Architecture · RTL</p>
+    <h1 class="proj-title">Pipelined<br><span class="hl">RISC-V</span><br>Processor</h1>
+    <div class="proj-tags">
+      <span class="tag">Verilog HDL</span>
+      <span class="tag">Xilinx Vivado</span>
+      <span class="tag">Computer Architecture</span>
+      <span class="tag muted">BITS Pilani Hyderabad</span>
+    </div>
+    <p class="proj-desc">
+      A 5-stage pipelined 32-bit RISC processor implementing a custom R/I/J-type ISA.
+      Full datapath with hazard detection, data forwarding, and branch flush — verified
+      via waveform simulation in Xilinx Vivado.
+    </p>
+    <div class="proj-cta">
+      <a href="https://github.com/apoorvvuppulury7/Pipelined-RISC-V-Processor" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo ↗</a>
+      <a href="../projects.html" class="btn-outline">← Back to Projects</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══ PIPELINE DIAGRAM ═══ -->
+  <div class="content-section fade">
+    <p class="sec-label">architecture</p>
+    <h2 class="sec-title">5-Stage Pipeline</h2>
+    <div class="pipeline">
+      <div class="pipe-stage">
+        <span class="stage-id">IF</span>
+        <span class="stage-name">Fetch</span>
+        <span class="stage-desc">PC update,<br>instruction<br>memory read</span>
+      </div>
+      <div class="pipe-stage">
+        <span class="stage-id">ID</span>
+        <span class="stage-name">Decode</span>
+        <span class="stage-desc">Register file<br>read, immediate<br>decode, ctrl sigs</span>
+      </div>
+      <div class="pipe-stage">
+        <span class="stage-id">EX</span>
+        <span class="stage-name">Execute</span>
+        <span class="stage-desc">ALU ops,<br>forwarding<br>MUX inputs</span>
+      </div>
+      <div class="pipe-stage">
+        <span class="stage-id">MEM</span>
+        <span class="stage-name">Memory</span>
+        <span class="stage-desc">Data memory<br>read / write,<br>load-use stall</span>
+      </div>
+      <div class="pipe-stage">
+        <span class="stage-id">WB</span>
+        <span class="stage-name">Writeback</span>
+        <span class="stage-desc">Register file<br>write, forwarding<br>path output</span>
+      </div>
+    </div>
+    <div class="body-text" style="margin-top:1rem">
+      <p>
+        Pipeline registers (<code>IF/ID</code>, <code>ID/EX</code>, <code>EX/MEM</code>, <code>MEM/WB</code>)
+        latch all signals needed by downstream stages. Control signals are generated in <code>ID</code>
+        and propagated through each register alongside the data.
+      </p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══ HAZARD HANDLING ═══ -->
+  <div class="content-section fade">
+    <p class="sec-label">design</p>
+    <h2 class="sec-title">Hazard Handling</h2>
+    <div class="detail-grid">
+
+      <div class="detail-card">
+        <div class="dc-icon">DATA FWD</div>
+        <div class="dc-title">Data Forwarding</div>
+        <div class="dc-body">
+          A dedicated forwarding unit compares destination registers of instructions in
+          <code>EX/MEM</code> and <code>MEM/WB</code> against source registers of the
+          instruction currently in <code>EX</code>. When a match is found, the ALU input
+          MUX is switched to pull the value directly from the later pipeline stage,
+          eliminating most RAW stalls without inserting bubbles.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">LOAD-USE</div>
+        <div class="dc-title">Load-Use Stall</div>
+        <div class="dc-body">
+          When a <code>load</code> instruction is immediately followed by an instruction
+          that reads the loaded register, the result is not available until after
+          <code>MEM</code>. The hazard detection unit freezes the <code>IF/ID</code> and
+          <code>ID/EX</code> registers for one cycle and inserts a bubble into
+          <code>EX</code>, then forwarding resolves the dependency on the next cycle.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">BRANCH</div>
+        <div class="dc-title">Control Hazard</div>
+        <div class="dc-body">
+          The processor uses a <strong>predict-not-taken</strong> strategy. On a taken
+          branch, instructions that entered <code>IF</code> and <code>ID</code> after the
+          branch are flushed by clearing the corresponding pipeline registers, and the PC
+          is redirected to the branch target computed in <code>EX</code>.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">STRUCT</div>
+        <div class="dc-title">Structural Hazards</div>
+        <div class="dc-body">
+          Avoided by design — separate instruction and data memory blocks
+          (Harvard-style) eliminate <code>IF</code>/<code>MEM</code> conflicts.
+          The register file supports simultaneous read (in <code>ID</code>) and
+          write (in <code>WB</code>) through internal forwarding within the register
+          file module.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══ ISA ═══ -->
+  <div class="content-section fade">
+    <p class="sec-label">ISA</p>
+    <h2 class="sec-title">Instruction Set</h2>
+    <div class="body-text">
+      <p>
+        The processor implements a custom 32-bit ISA with three primary instruction formats,
+        closely following RISC-V conventions.
+      </p>
+    </div>
+    <div class="detail-grid" style="margin-top:1.25rem">
+
+      <div class="detail-card">
+        <div class="dc-icon">R-TYPE</div>
+        <div class="dc-title">Register–Register</div>
+        <div class="dc-body">
+          ALU operations between two source registers writing to a destination register.
+          Includes <code>ADD</code>, <code>SUB</code>, <code>AND</code>, <code>OR</code>,
+          <code>XOR</code>, <code>SLT</code>, <code>SLL</code>, <code>SRL</code>.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">I-TYPE</div>
+        <div class="dc-title">Immediate &amp; Load</div>
+        <div class="dc-body">
+          ALU operations with a 12-bit sign-extended immediate, plus load instructions
+          (<code>LW</code>) and the <code>JALR</code> indirect jump. Immediate is
+          sign-extended in the <code>ID</code> stage.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">S-TYPE</div>
+        <div class="dc-title">Store</div>
+        <div class="dc-body">
+          <code>SW</code> instruction that writes a register value to data memory.
+          The 12-bit offset is split across <code>inst[11:7]</code> and
+          <code>inst[31:25]</code> and reassembled in <code>ID</code>.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">B / J-TYPE</div>
+        <div class="dc-title">Branch &amp; Jump</div>
+        <div class="dc-body">
+          Conditional branches (<code>BEQ</code>, <code>BNE</code>, <code>BLT</code>,
+          <code>BGE</code>) with PC-relative targets computed in <code>EX</code>.
+          Unconditional <code>JAL</code> stores the return address in a destination
+          register.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══ VERIFICATION ═══ -->
+  <div class="content-section fade">
+    <p class="sec-label">verification</p>
+    <h2 class="sec-title">Simulation &amp; Testing</h2>
+    <div class="body-text">
+      <p>
+        All modules were verified in Xilinx Vivado using a hand-crafted assembly test program
+        that exercises every instruction type and every hazard class.
+      </p>
+    </div>
+    <ul class="bullet-list" style="margin-top:1rem">
+      <li>Back-to-back R-type instructions verified correct EX→EX and MEM→EX forwarding paths</li>
+      <li>Load followed immediately by a dependent instruction confirmed load-use stall and single-cycle bubble insertion</li>
+      <li>Taken and not-taken branches verified flush logic and PC redirect to correct target address</li>
+      <li>Store-then-load sequence confirmed data memory write-read consistency</li>
+      <li>Waveform inspection in Vivado simulator used to trace every pipeline register value cycle-by-cycle</li>
+      <li>Corner-case: back-to-back loads and dependent chains verified no double-stall or missed forward</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══ TOOLS ═══ -->
+  <div class="content-section fade">
+    <p class="sec-label">tools &amp; stack</p>
+    <h2 class="sec-title">What I Used</h2>
+    <div class="chips" style="gap:.4rem">
+      <span class="chip">Verilog HDL</span>
+      <span class="chip">Xilinx Vivado</span>
+      <span class="chip">Behavioural Simulation</span>
+      <span class="chip">Waveform Debugging</span>
+      <span class="chip">Harvard Architecture</span>
+      <span class="chip">32-bit Datapath</span>
+      <span class="chip">Pipeline Registers</span>
+      <span class="chip">Forwarding Unit</span>
+      <span class="chip">Hazard Detection Unit</span>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer class="footer">
+  <span class="footer__copy">© 2026 Apoorv Vuppulury · BITS Pilani Hyderabad</span>
+  <span class="footer__status"><span class="status-dot"></span>online</span>
+</footer>
+
+<script>
+  // Theme toggle
+  const root = document.documentElement;
+  const themeBtn = document.getElementById("themeBtn");
+  let dark = true;
+  function applyTheme(){ root.setAttribute("data-theme", dark ? "dark" : "light"); themeBtn.textContent = dark ? "[ light ]" : "[ dark ]"; }
+  applyTheme();
+  themeBtn.addEventListener("click", () => { dark = !dark; applyTheme(); });
+
+  // Sticky header
+  const hdr = document.getElementById("hdr");
+  window.addEventListener("scroll", () => hdr.classList.toggle("scrolled", scrollY > 24), {passive:true});
+
+  // Mobile nav
+  const mobileBtn = document.getElementById("mobileBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  mobileBtn.addEventListener("click", () => {
+    const o = mobileNav.classList.toggle("open");
+    mobileBtn.setAttribute("aria-expanded", String(o));
+  });
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+  // Scroll fade-in
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, {threshold: 0.06});
+  document.querySelectorAll(".fade").forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
