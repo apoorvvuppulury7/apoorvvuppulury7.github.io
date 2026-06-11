@@ -130,7 +130,7 @@
     .proj-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
     .tag{font-family:var(--mono);font-size:var(--t-xs);padding:.2rem .7rem;background:var(--primary-faint);border:1px solid var(--border);border-radius:3px;color:var(--primary);letter-spacing:.04em}
     .tag.muted{background:transparent;color:var(--text-muted);border-color:var(--border-dim)}
-    .proj-desc{font-size:var(--t-base);color:var(--text-muted);max-width:60ch;line-height:1.8;margin-bottom:2rem}
+    .proj-desc{font-size:var(--t-base);color:var(--text-muted);line-height:1.8;margin-bottom:2rem}
     .proj-cta{display:flex;gap:.75rem;flex-wrap:wrap}
     .btn-primary{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;background:var(--primary);color:var(--bg);border:1px solid var(--primary);border-radius:var(--r);font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease);display:inline-block}
     .btn-primary:hover{background:var(--primary-dim);box-shadow:var(--primary-glow)}
@@ -218,9 +218,13 @@
 
   <!-- ═══ HERO ═══ -->
   <div class="proj-header fade">
-    <h1 class="proj-title">Pipelined <span class="hl">RISC-V</span> Processor</h1>
+    <p class="proj-category">Computer Architecture · RTL</p>
+    <h1 class="proj-title">Pipelined<br><span class="hl">RISC-V</span><br>Processor</h1>
     <div class="proj-tags">
-      <span class="tag">CS F342 - Computer Architecture Course Project</span>
+      <span class="tag">Verilog HDL</span>
+      <span class="tag">Xilinx Vivado</span>
+      <span class="tag">Computer Architecture</span>
+      <span class="tag muted">BITS Pilani Hyderabad</span>
     </div>
     <p class="proj-desc">
       A 5-stage pipelined 32-bit RISC processor implementing a custom R/I/J-type ISA.
