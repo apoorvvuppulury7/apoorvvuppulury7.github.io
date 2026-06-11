@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Education — Apoorv Vuppulury</title>
+  <meta name="description" content="Education — Apoorv Vuppulury, Electronics & Communication Engineering, BITS Pilani Hyderabad." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+  <style>
+    :root,[data-theme="dark"]{
+      --bg:#0c0e0c;--surface:#111411;--surface-2:#161a16;--surface-3:#1c211c;
+      --border:rgba(0,255,136,0.10);--border-dim:rgba(255,255,255,0.05);
+      --text:#dde8dd;--text-muted:#7a9a7a;--text-faint:#344a34;
+      --primary:#00ff88;--primary-dim:#00cc6a;--primary-faint:rgba(0,255,136,0.07);
+      --primary-glow:0 0 16px rgba(0,255,136,0.3);--amber:#ffb300;
+      --mono:"JetBrains Mono","Courier New",monospace;
+      --sans:"Inter",system-ui,sans-serif;
+      --ease:180ms cubic-bezier(0.16,1,0.3,1);
+      --content:1400px;--r:6px;
+      --t-xs:.72rem;--t-sm:.85rem;--t-base:.9375rem;--t-lg:1.125rem;
+      --t-xl:clamp(1.5rem,3vw,2.25rem);--t-hero:clamp(2.8rem,7vw,6rem);
+    }
+    [data-theme="light"]{
+      --bg:#f2f5f2;--surface:#eaeeea;--surface-2:#e2e7e2;--surface-3:#d8dfd8;
+      --border:rgba(0,100,50,0.15);--border-dim:rgba(0,0,0,0.06);
+      --text:#141e14;--text-muted:#3a5a3a;--text-faint:#90a890;
+      --primary:#007a40;--primary-dim:#005e30;--primary-faint:rgba(0,122,64,0.07);
+      --primary-glow:0 0 10px rgba(0,122,64,0.2);--amber:#b07000;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:4.5rem;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:var(--t-base);line-height:1.65;min-height:100dvh;overflow-x:hidden;transition:background var(--ease),color var(--ease)}
+    a{color:inherit;text-decoration:none}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+    :focus-visible{outline:1px solid var(--primary);outline-offset:3px;border-radius:3px}
+
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(var(--border-dim) 1px,transparent 1px),linear-gradient(90deg,var(--border-dim) 1px,transparent 1px);
+      background-size:48px 48px;
+      mask-image:radial-gradient(ellipse 90% 50% at 50% 0%,black 20%,transparent 100%)}
+
+    /* HEADER */
+    .hdr{position:sticky;top:0;z-index:100;border-bottom:1px solid transparent;transition:background var(--ease),border-color var(--ease)}
+    .hdr.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(20px);border-bottom-color:var(--border)}
+    .hdr__inner{max-width:var(--content);margin-inline:auto;padding:.9rem clamp(1.5rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .logo{font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);display:flex;align-items:center}
+    .logo__cursor{display:inline-block;width:8px;height:1.1em;background:var(--primary);animation:blink 1.1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .nav{display:flex;align-items:center;gap:1.4rem}
+    .nav a{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;transition:color var(--ease)}
+    .nav a:hover,.nav a.active{color:var(--primary)}
+    .hdr__actions{display:flex;align-items:center;gap:.75rem}
+    .theme-btn{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);padding:.2rem .5rem;border:1px solid var(--border-dim);border-radius:3px;transition:color var(--ease),border-color var(--ease)}
+    .theme-btn:hover{color:var(--primary);border-color:var(--border)}
+    .btn-cv{font-family:var(--mono);font-size:var(--t-xs);padding:.4rem 1rem;border:1px solid var(--primary);border-radius:var(--r);background:var(--primary-faint);color:var(--primary);letter-spacing:.05em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease)}
+    .btn-cv:hover{background:rgba(0,255,136,0.14);box-shadow:var(--primary-glow)}
+    .mobile-btn{display:none;color:var(--text-muted);font-size:1.2rem;padding:.25rem}
+    .mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);z-index:99}
+    .mobile-nav.open{display:flex;flex-direction:column}
+    .mobile-nav a{font-family:var(--mono);font-size:var(--t-sm);padding:1rem 1.5rem;color:var(--text-muted);border-bottom:1px solid var(--border-dim);transition:color var(--ease)}
+    .mobile-nav a:hover{color:var(--primary)}
+
+    /* LAYOUT */
+    .wrap{max-width:var(--content);margin-inline:auto;padding:clamp(3rem,8vw,5rem) clamp(1.5rem,4vw,3rem);position:relative;z-index:1}
+    .divider{border:none;border-top:1px solid var(--border-dim);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
+    .sec-label{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+    .sec-label::before{content:"//";color:var(--text-faint)}
+    .sec-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:clamp(2rem,4vw,3rem)}
+
+    /* CHIPS */
+    .chips{display:flex;flex-wrap:wrap;gap:.25rem}
+    .chip{font-family:var(--mono);font-size:var(--t-xs);padding:2px .5rem;background:var(--surface-2);border:1px solid var(--border-dim);border-radius:3px;color:var(--text-muted)}
+
+    /* BACK LINK */
+    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2.5rem;transition:color var(--ease)}
+    .back-link:hover{color:var(--primary)}
+
+    /* EDU TIMELINE */
+    .edu-timeline{display:flex;flex-direction:column;gap:1.5rem}
+    .edu-card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.5rem 1.75rem;position:relative;overflow:hidden;transition:border-color var(--ease),box-shadow var(--ease)}
+    .edu-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary);box-shadow:var(--primary-glow)}
+    .edu-card:hover{border-color:var(--border);box-shadow:0 0 24px rgba(0,255,136,.06)}
+    .edu-card__head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem}
+    .edu-card__title{font-family:var(--mono);font-size:var(--t-lg);font-weight:700;color:var(--text)}
+    .edu-card__inst{font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);margin-top:.2rem}
+    .edu-card__meta{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);text-align:right}
+    .edu-card__cgpa{font-family:var(--mono);font-size:var(--t-lg);color:var(--amber);font-weight:700}
+
+    /* SEMESTER GRID */
+    .sem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:1rem;margin-top:1.25rem}
+    .sem-block{background:var(--surface-2);border:1px solid var(--border-dim);border-radius:var(--r);padding:1rem 1.25rem}
+    .sem-block__title{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem}
+    .sem-block ul{display:flex;flex-direction:column;gap:.3rem}
+    .sem-block li{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);padding-left:.75rem;position:relative}
+    .sem-block li::before{content:"▸";position:absolute;left:0;color:var(--text-faint)}
+
+    /* NPTEL GRID */
+    .nptel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:.5rem;margin-top:1rem}
+    .nptel-item{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);background:var(--surface-2);border:1px solid var(--border-dim);border-radius:3px;padding:.5rem 1rem;display:flex;align-items:center;gap:.5rem}
+    .nptel-item::before{content:"✦";color:var(--primary);font-size:.6rem}
+
+    /* POR CARD */
+    .por-card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.25rem 1.5rem;position:relative;overflow:hidden;transition:border-color var(--ease),box-shadow var(--ease)}
+    .por-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--text-faint);transition:background var(--ease)}
+    .por-card:hover{border-color:var(--border);box-shadow:0 0 20px rgba(0,255,136,.05)}
+    .por-card:hover::before{background:var(--primary)}
+    .por-card__title{font-family:var(--mono);font-size:var(--t-sm);font-weight:700;color:var(--text);margin-bottom:.25rem}
+    .por-card__org{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);margin-bottom:.5rem}
+    .por-card__date{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);margin-bottom:.6rem}
+    .por-card__desc{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7}
+    .por-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(380px,100%),1fr));gap:1rem}
+
+    /* FADE */
+    .fade{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+    .fade.visible{opacity:1;transform:none}
+
+    /* FOOTER */
+    .footer{max-width:var(--content);margin-inline:auto;padding:2rem clamp(1.5rem,4vw,3rem);border-top:1px solid var(--border-dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:1}
+    .footer__copy{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
+    .footer__status{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);display:flex;align-items:center;gap:.5rem}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);animation:pulse 2.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    @media(max-width:720px){
+      .nav,.btn-cv{display:none}
+      .mobile-btn{display:block}
+      .edu-card__head{flex-direction:column}
+      .edu-card__meta{text-align:left}
+    }
+  </style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="hdr__inner">
+    <div class="logo">apoorv@portfolio<span class="logo__cursor"></span></div>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html#about">about</a>
+      <a href="index.html#skills">skills</a>
+      <a href="projects.html">projects</a>
+      <a href="index.html#experience">experience</a>
+      <a href="education.html" class="active">education</a>
+      <a href="index.html#contact">contact</a>
+    </nav>
+    <div class="hdr__actions">
+      <button class="theme-btn" id="themeBtn">[ light ]</button>
+      <button class="mobile-btn" id="mobileBtn">&#9776;</button>
+      <a href="Apoorv_Resume_110626" class="btn-cv" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html#about">about</a>
+    <a href="index.html#skills">skills</a>
+    <a href="projects.html">projects</a>
+    <a href="index.html#experience">experience</a>
+    <a href="education.html">education</a>
+    <a href="index.html#contact">contact</a>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap fade">
+    <a href="index.html" class="back-link">← back to home</a>
+    <p class="sec-label">education</p>
+    <h1 class="sec-title">Academic Background</h1>
+
+    <div class="edu-timeline">
+
+      <!-- ── BITS PILANI ── -->
+      <div class="edu-card">
+        <div class="edu-card__head">
+          <div>
+            <div class="edu-card__title">B.E. Electronics &amp; Communication Engineering</div>
+            <div class="edu-card__inst">Birla Institute of Technology &amp; Science, Pilani — Hyderabad Campus</div>
+          </div>
+          <div class="edu-card__meta">
+            <div>2022 – 2026</div>
+            <div class="edu-card__cgpa">CGPA 8.01 / 10</div>
+          </div>
+        </div>
+
+        <div class="sem-grid" style="grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))">
+          <div class="sem-block">
+            <div class="sem-block__title">Core Discipline Courses</div>
+            <ul>
+              <li>Electromagnetic Theory</li>
+              <li>Electronic Devices</li>
+              <li>Digital Design</li>
+              <li>Microelectronic Circuits</li>
+              <li>Control Systems</li>
+              <li>Digital Signal Processing</li>
+              <li>Communication Systems</li>
+              <li>Analog Electronics</li>
+              <li>Communication Networks</li>
+              <li>Information Theory</li>
+              <li>Microwave Engineering</li>
+            </ul>
+          </div>
+          <div class="sem-block">
+            <div class="sem-block__title">Discipline Electives</div>
+            <ul>
+              <li>Computer Architecture</li>
+              <li>Microprocessors &amp; Interfacing</li>
+              <li>Embedded Systems Design</li>
+              <li>Digital VLSI Design</li>
+              <li>Machine Learning</li>
+              <li>Electronic Circuits Laboratory</li>
+              <li>SIP Project</li>
+            </ul>
+          </div>
+          <div class="sem-block">
+            <div class="sem-block__title">Open Electives</div>
+            <ul>
+              <li>Foundations of Data Science</li>
+              <li>Fundamentals of DSA</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CLASS 12 ── -->
+      <div class="edu-card">
+        <div class="edu-card__head">
+          <div>
+            <div class="edu-card__title">Class XII — CBSE</div>
+            <div class="edu-card__inst"><!-- Add your school name --></div>
+          </div>
+          <div class="edu-card__meta">
+            <div>2022</div>
+            <div class="edu-card__cgpa"><!-- Add your percentage / grade --></div>
+          </div>
+        </div>
+        <div class="chips" style="margin-top:.5rem">
+          <span class="chip">Physics</span>
+          <span class="chip">Chemistry</span>
+          <span class="chip">Mathematics</span>
+          <span class="chip">Computer Science</span>
+          <span class="chip">English</span>
+        </div>
+      </div>
+
+      <!-- ── CLASS 10 ── -->
+      <div class="edu-card">
+        <div class="edu-card__head">
+          <div>
+            <div class="edu-card__title">Class X — CBSE</div>
+            <div class="edu-card__inst"><!-- Add your school name --></div>
+          </div>
+          <div class="edu-card__meta">
+            <div>2020</div>
+            <div class="edu-card__cgpa"><!-- Add your percentage / grade --></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── NPTEL CERTIFICATIONS ── -->
+  <section class="wrap fade">
+    <p class="sec-label">certifications</p>
+    <h2 class="sec-title">NPTEL Certifications</h2>
+    <div class="nptel-grid">
+      <div class="nptel-item">Embedded Systems Design</div>
+      <div class="nptel-item">Digital IC Design</div>
+      <div class="nptel-item">Parallel Computer Architecture</div>
+      <div class="nptel-item">VLSI Physical Design</div>
+      <div class="nptel-item">Advanced Computer Architecture</div>
+      <div class="nptel-item">IC Design for Wireless Systems</div>
+      <div class="nptel-item">Memory Device Technology for AI/ML Computing</div>
+      <div class="nptel-item">VLSI Physical Design with Timing Analysis</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── POSITIONS OF RESPONSIBILITY ── -->
+  <section class="wrap fade">
+    <p class="sec-label">positions of responsibility</p>
+    <h2 class="sec-title">Positions of Responsibility</h2>
+    <div class="por-grid">
+
+      <div class="por-card">
+        <div class="por-card__title">Founding Member &amp; Training and Counselling Lead</div>
+        <div class="por-card__org">Student Welfare and Mentorship Committee · BITS Pilani Hyderabad</div>
+        <div class="por-card__date">May 2024 – Aug 2025</div>
+        <div class="por-card__desc">
+          Designed the first comprehensive mentorship programme of BPHC, leading a team of 150 student mentors and positively impacting over 500 first-year students addressing key transitional challenges from Day 0.
+          Also served as member of the Student-Faculty Council, helping the Department improve course standards and material.
+          Received a Certificate of Appreciation for contributions to the Dept. of EEE.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span class="footer__copy">© 2026 Apoorv Vuppulury · BITS Pilani Hyderabad</span>
+  <span class="footer__status"><span class="status-dot"></span>online</span>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const themeBtn = document.getElementById("themeBtn");
+  let dark = true;
+  function applyTheme(){ root.setAttribute("data-theme", dark?"dark":"light"); themeBtn.textContent = dark?"[ light ]":"[ dark ]"; }
+  applyTheme();
+  themeBtn.addEventListener("click", () => { dark=!dark; applyTheme(); });
+
+  const hdr = document.getElementById("hdr");
+  window.addEventListener("scroll", () => hdr.classList.toggle("scrolled", scrollY > 24), {passive:true});
+
+  const mobileBtn = document.getElementById("mobileBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  mobileBtn.addEventListener("click", () => { const o=mobileNav.classList.toggle("open"); mobileBtn.setAttribute("aria-expanded",String(o)); });
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, {threshold:0.06});
+  document.querySelectorAll(".fade").forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
