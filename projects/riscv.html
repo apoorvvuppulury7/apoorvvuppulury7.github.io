@@ -287,8 +287,7 @@
 
   <!-- ═══ PIPELINE DIAGRAM ═══ -->
   <div class="content-section fade">
-    <p class="sec-label">architecture</p>
-    <h2 class="sec-title">5-Stage Pipeline</h2>
+    <h2 class="sec-title">5-Stage Pipeline Architecture</h2>
     <!-- DATAPATH IMAGE — place pipeline_diagram.jpg in your projects/ folder -->
     <div class="datapath-img-wrap">
       <img src="pipeline_diagram.png" alt="Pipelined RISC-V Processor Diagram" />
@@ -328,7 +327,6 @@
 
   <!-- ═══ HAZARD HANDLING ═══ -->
   <div class="content-section fade">
-    <p class="sec-label">design</p>
     <h2 class="sec-title">Hazard Handling</h2>
     <div class="detail-grid">
 
@@ -386,12 +384,10 @@
 
   <!-- ═══ ISA ═══ -->
   <div class="content-section fade">
-    <p class="sec-label">ISA</p>
     <h2 class="sec-title">Instruction Set</h2>
     <div class="body-text">
       <p>
-        The processor implements a custom 32-bit ISA with three primary instruction formats,
-        closely following RISC-V conventions.
+        The processor implements a custom 32-bit ISA with three primary instruction formats, closely following MIPS conventions.
       </p>
     </div>
     <div class="detail-grid" style="margin-top:1.25rem">
@@ -408,7 +404,7 @@
 
       <div class="detail-card">
         <div class="dc-icon">I-TYPE</div>
-        <div class="dc-title">Immediate &amp; Load</div>
+        <div class="dc-title">Immediate &amp; Load/Store</div>
         <div class="dc-body">
           ALU operations with a 12-bit sign-extended immediate, plus load instructions
           (<code>LW</code>) and the <code>JALR</code> indirect jump. Immediate is
@@ -417,17 +413,7 @@
       </div>
 
       <div class="detail-card">
-        <div class="dc-icon">S-TYPE</div>
-        <div class="dc-title">Store</div>
-        <div class="dc-body">
-          <code>SW</code> instruction that writes a register value to data memory.
-          The 12-bit offset is split across <code>inst[11:7]</code> and
-          <code>inst[31:25]</code> and reassembled in <code>ID</code>.
-        </div>
-      </div>
-
-      <div class="detail-card">
-        <div class="dc-icon">B / J-TYPE</div>
+        <div class="dc-icon">J-TYPE</div>
         <div class="dc-title">Branch &amp; Jump</div>
         <div class="dc-body">
           Conditional branches (<code>BEQ</code>, <code>BNE</code>, <code>BLT</code>,
@@ -444,12 +430,10 @@
 
   <!-- ═══ VERIFICATION ═══ -->
   <div class="content-section fade">
-    <p class="sec-label">verification</p>
     <h2 class="sec-title">Simulation &amp; Testing</h2>
     <div class="body-text">
       <p>
-        All modules were verified in Xilinx Vivado using a hand-crafted assembly test program
-        that exercises every instruction type and every hazard class.
+        All modules were verified in Xilinx Vivado using a hand-crafted assembly test program that exercises every instruction type and every hazard class.
       </p>
     </div>
     <ul class="bullet-list" style="margin-top:1rem">
@@ -467,8 +451,7 @@
 </main>
 
 <footer class="footer">
-  <span class="footer__copy">© 2026 Apoorv Vuppulury · BITS Pilani Hyderabad</span>
-  <span class="footer__status"><span class="status-dot"></span>online</span>
+  <span class="footer__copy">© 2026 Apoorv Vuppulury </span>
 </footer>
 
 <script>
