@@ -218,7 +218,6 @@
 
   <!-- ═══ HERO ═══ -->
   <div class="proj-header fade">
-    <p class="proj-category">Computer Architecture · RTL</p>
     <h1 class="proj-title">Pipelined <span class="hl">RISC-V</span> Processor</h1>
     <div class="proj-tags">
       <span class="tag">Verilog HDL</span>
@@ -241,7 +240,6 @@
 
   <!-- ═══ PIPELINE DIAGRAM ═══ -->
   <div class="content-section fade">
-    <p class="sec-label">architecture</p>
     <h2 class="sec-title">5-Stage Pipeline</h2>
     <div class="pipeline">
       <div class="pipe-stage">
@@ -270,20 +268,12 @@
         <span class="stage-desc">Register file<br>write, forwarding<br>path output</span>
       </div>
     </div>
-    <div class="body-text" style="margin-top:1rem">
-      <p>
-        Pipeline registers (<code>IF/ID</code>, <code>ID/EX</code>, <code>EX/MEM</code>, <code>MEM/WB</code>)
-        latch all signals needed by downstream stages. Control signals are generated in <code>ID</code>
-        and propagated through each register alongside the data.
-      </p>
-    </div>
   </div>
 
   <hr class="divider">
 
   <!-- ═══ HAZARD HANDLING ═══ -->
   <div class="content-section fade">
-    <p class="sec-label">design</p>
     <h2 class="sec-title">Hazard Handling</h2>
     <div class="detail-grid">
 
