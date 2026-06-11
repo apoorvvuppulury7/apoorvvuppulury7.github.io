@@ -181,6 +181,25 @@
       .pipe-stage .stage-desc{display:none}
       .detail-grid{grid-template-columns:1fr}
     }
+  
+    /* TOOLS GRID */
+    .tools-grid{display:flex;flex-direction:column;gap:0;border:1px solid var(--border-dim);border-radius:var(--r);overflow:hidden;margin-top:1rem}
+    .tool-row{display:grid;grid-template-columns:160px 1fr;gap:1.5rem;padding:.9rem 1.25rem;border-bottom:1px solid var(--border-dim);transition:background var(--ease)}
+    .tool-row:last-child{border-bottom:none}
+    .tool-row:hover{background:var(--surface-2)}
+    .tool-key{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.08em;text-transform:uppercase;padding-top:.05rem}
+    .tool-val{font-family:var(--mono);font-size:var(--t-sm);color:var(--text-muted);line-height:1.6}
+
+  
+    .proj-course-tag{display:inline-block;font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);background:var(--primary-faint);border:1px solid var(--primary);border-radius:3px;padding:.25rem .75rem;letter-spacing:.04em;margin-bottom:1.25rem}
+
+  
+    /* DATAPATH IMAGE */
+    .datapath-img-wrap{margin:1.5rem 0 2rem;border:1px solid var(--border-dim);border-radius:var(--r);overflow:hidden;background:var(--surface);transition:border-color var(--ease),box-shadow var(--ease)}
+    .datapath-img-wrap:hover{border-color:var(--border);box-shadow:0 0 24px rgba(0,255,136,.07)}
+    .datapath-img{width:100%;display:block;object-fit:contain;background:#fff}
+    .img-caption{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);padding:.6rem 1rem;border-top:1px solid var(--border-dim);letter-spacing:.03em;line-height:1.6}
+
   </style>
 </head>
 <body>
@@ -218,13 +237,8 @@
 
   <!-- ═══ HERO ═══ -->
   <div class="proj-header fade">
-    <h1 class="proj-title">Pipelined <span class="hl">RISC-V</span> Processor</h1>
-    <div class="proj-tags">
-      <span class="tag">Verilog HDL</span>
-      <span class="tag">Xilinx Vivado</span>
-      <span class="tag">Computer Architecture</span>
-      <span class="tag muted">BITS Pilani Hyderabad</span>
-    </div>
+    <h1 class="proj-title">Pipelined<br><span class="hl">RISC-V</span><br>Processor</h1>
+    <div class="proj-course-tag">CS F342 — Computer Architecture &nbsp;·&nbsp; Course Project</div>
     <p class="proj-desc">
       A 5-stage pipelined 32-bit RISC processor implementing a custom R/I/J-type ISA.
       Full datapath with hazard detection, data forwarding, and branch flush — verified
@@ -232,15 +246,56 @@
     </p>
     <div class="proj-cta">
       <a href="https://github.com/apoorvvuppulury7/Pipelined-RISC-V-Processor" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo ↗</a>
+      <!-- PLACEHOLDER: Replace # with your project report PDF/link -->
+      <a href="#" class="btn-outline" target="_blank" rel="noopener noreferrer">Project Report ↗</a>
       <a href="../projects.html" class="btn-outline">← Back to Projects</a>
     </div>
   </div>
 
   <hr class="divider">
 
+  <!-- ═══ TOOLS & STACK ═══ -->
+  <div class="content-section fade">
+    <p class="sec-label">tools &amp; stack</p>
+    <h2 class="sec-title">Tools &amp; Stack</h2>
+    <div class="tools-grid">
+
+      <div class="tool-row">
+        <span class="tool-key">Tools</span>
+        <span class="tool-val">Xilinx Vivado</span>
+      </div>
+
+      <div class="tool-row">
+        <span class="tool-key">Language</span>
+        <span class="tool-val">Verilog, UVM</span>
+      </div>
+
+      <div class="tool-row">
+        <span class="tool-key">Principles</span>
+        <span class="tool-val">Harvard Architecture · Pipelined Processor · Data Forwarding Unit · Hazard Detection Unit</span>
+      </div>
+
+      <div class="tool-row">
+        <span class="tool-key">Output</span>
+        <span class="tool-val">Behavioural Simulation · Waveform Debugging</span>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+
   <!-- ═══ PIPELINE DIAGRAM ═══ -->
   <div class="content-section fade">
+    <p class="sec-label">architecture</p>
     <h2 class="sec-title">5-Stage Pipeline</h2>
+    <!-- DATAPATH IMAGE — place pipeline_diagram.jpg in your projects/ folder -->
+    <div class="datapath-img-wrap">
+      <img src="pipeline_diagram.jpg" alt="Pipelined RISC-V Processor Diagram" />
+      <p class="img-caption">Full datapath — PC, instruction memory, register file, ALU, data memory, pipeline registers (IF/ID · ID/EX · EX/MEM · MEM/WB), forwarding unit, hazard detection unit</p>
+    </div>
+
     <div class="pipeline">
       <div class="pipe-stage">
         <span class="stage-id">IF</span>
@@ -274,6 +329,7 @@
 
   <!-- ═══ HAZARD HANDLING ═══ -->
   <div class="content-section fade">
+    <p class="sec-label">design</p>
     <h2 class="sec-title">Hazard Handling</h2>
     <div class="detail-grid">
 
@@ -408,24 +464,6 @@
   </div>
 
   <hr class="divider">
-
-  <!-- ═══ TOOLS ═══ -->
-  <div class="content-section fade">
-    <p class="sec-label">tools &amp; stack</p>
-    <h2 class="sec-title">What I Used</h2>
-    <div class="chips" style="gap:.4rem">
-      <span class="chip">Verilog HDL</span>
-      <span class="chip">Xilinx Vivado</span>
-      <span class="chip">Behavioural Simulation</span>
-      <span class="chip">Waveform Debugging</span>
-      <span class="chip">Harvard Architecture</span>
-      <span class="chip">32-bit Datapath</span>
-      <span class="chip">Pipeline Registers</span>
-      <span class="chip">Forwarding Unit</span>
-      <span class="chip">Hazard Detection Unit</span>
-    </div>
-  </div>
-
 </div>
 </main>
 
