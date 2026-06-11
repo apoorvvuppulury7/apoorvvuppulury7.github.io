@@ -70,7 +70,8 @@
     .divider{border:none;border-top:1px solid var(--border-dim);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
     .sec-label{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
     .sec-label::before{content:"//";color:var(--text-faint)}
-    .sec-title{font-family:var(--mono);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:clamp(2rem,4vw,3rem)}
+    .sec-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:clamp(2rem,4vw,3rem)}
+
     /* HERO */
     .hero{padding:clamp(4rem,12vw,7rem) 1.5rem clamp(3rem,8vw,5rem);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
     .hero__prompt{font-family:var(--mono);font-size:var(--t-sm);color:var(--text-faint);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
@@ -81,7 +82,7 @@
     .tag{font-family:var(--mono);font-size:var(--t-xs);padding:.2rem .7rem;background:var(--primary-faint);border:1px solid var(--border);border-radius:3px;color:var(--primary);letter-spacing:.04em}
     .tag.muted{background:transparent;color:var(--text-muted);border-color:var(--border-dim)}
     .tag.amber{background:rgba(255,179,0,0.08);color:var(--amber);border-color:rgba(255,179,0,0.2)}
-    .hero__desc{font-size:var(--t-base);color:var(--text-muted);line-height:1.8;margin-bottom:2.5rem}
+    .hero__desc{font-size:var(--t-base);color:var(--text-muted);max-width:60ch;line-height:1.8;margin-bottom:2.5rem}
     .hero__cta{display:flex;gap:.75rem;flex-wrap:wrap}
     .btn-primary{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;background:var(--primary);color:var(--bg);border:1px solid var(--primary);border-radius:var(--r);font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease)}
     .btn-primary:hover{background:var(--primary-dim);box-shadow:var(--primary-glow)}
@@ -89,7 +90,7 @@
     .btn-outline:hover{color:var(--primary);border-color:var(--border)}
 
     /* ABOUT */
-    .about__body p{color:var(--text-muted);line-height:1.8;max-width:100%}
+    .about__body p{color:var(--text-muted);line-height:1.8;max-width:72ch}
     .about__body p+p{margin-top:1rem}
     .about__body code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 5px;border-radius:3px}
 
@@ -144,6 +145,22 @@
       .mobile-btn{display:block}
       .contact__inner{grid-template-columns:1fr}
     }
+  
+    /* TYPEWRITER */
+    .hero__desc{font-size:var(--t-base);color:var(--text-muted);line-height:1.8;margin-bottom:2.5rem;min-height:5.5rem}
+    .tw-cursor{display:inline-block;width:2px;height:1em;background:var(--primary);margin-left:2px;vertical-align:text-bottom;animation:blink 1.1s step-end infinite}
+
+  
+    /* HERO TWO-COLUMN LAYOUT */
+    .hero__layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-top:0}
+    .hero__left{display:flex;flex-direction:column;gap:1.5rem}
+    .hero__right{display:flex;align-items:center;justify-content:flex-start}
+    .hero__desc{font-family:var(--mono);font-size:var(--t-lg);color:var(--text-muted);line-height:1.7;text-align:left;margin:0}
+    @media(max-width:720px){
+      .hero__layout{grid-template-columns:1fr;gap:2rem}
+      .hero__right{justify-content:flex-start}
+    }
+
   </style>
 </head>
 <body>
@@ -155,7 +172,7 @@
     <nav class="nav" aria-label="Primary">
       <a href="#about">about</a>
       <a href="#skills">skills</a>
-      <a href="projects.html">projects</a>
+      <a href="#projects">projects</a>
       <a href="#experience">experience</a>
       <a href="#contact">contact</a>
     </nav>
@@ -166,11 +183,12 @@
       <a href="#" class="btn-cv" target="_blank" rel="noopener noreferrer">Resume ↗</a>
     </div>
   </div>
-    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <a href="#about">About <span style="color:var(--text-faint)">— Who am I?</span></a>
-    <a href="projects.html">Projects <span style="color:var(--text-faint)">— Things I've built</span></a>
-    <a href="#experience">Experience <span style="color:var(--text-faint)">— Where I've worked</span></a>
-    <a href="#contact">Contact <span style="color:var(--text-faint)">— Get in touch</span></a>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <a href="#about">about</a>
+    <a href="#skills">skills</a>
+    <a href="#projects">projects</a>
+    <a href="#experience">experience</a>
+    <a href="#contact">contact</a>
   </nav>
 </header>
 
@@ -178,22 +196,27 @@
 
   <!-- ═══ HERO ═══ -->
   <section class="hero">
-    
-    <h1 class="hero__name">Apoorv</br><span class="hl">Vuppulury</span></h1>
-    <div class="hero__tags">
-      <span class="tag">VLSI DESIGN</span>
-      <span class="tag">EMBEDDED SYSTEMS</span>
-      <span class="tag">COMPUTER ARCHITECTURE</span>
-      <span class="tag amber">OPEN TO ROLES</span>
-    </div>
-    <p class="hero__desc">
-      Final-year Electronics &amp; Communication Engineering student at BITS Pilani, Hyderabad Campus.
-      I build hardware-software systems grounded in rigorous design, implementation, and validation —
-      from RTL processors and gimbal control loops to ML-driven wireless network optimisation.
-    </p>
-    <div class="hero__cta">
-      <a href="projects.html" class="btn-primary">View my work</a>
-      <a href="#contact" class="btn-outline">Get in touch</a>
+    <p class="hero__prompt"><span class="hero__prompt-sym">$</span>&nbsp;whoami</p>
+    <div class="hero__layout">
+      <!-- LEFT: name + tags + buttons -->
+      <div class="hero__left">
+        <h1 class="hero__name">Apoorv<br><span class="hl">Vuppulury</span></h1>
+        <div class="hero__tags">
+          <span class="tag">VLSI DESIGN</span>
+          <span class="tag">EMBEDDED SYSTEMS</span>
+          <span class="tag">COMPUTER ARCHITECTURE</span>
+          <span class="tag muted">BITS Pilani · Hyderabad</span>
+          <span class="tag amber">OPEN TO ROLES</span>
+        </div>
+        <div class="hero__cta">
+          <a href="projects.html" class="btn-primary">View my work</a>
+          <a href="#contact" class="btn-outline">Get in touch</a>
+        </div>
+      </div>
+      <!-- RIGHT: typewriter description -->
+      <div class="hero__right">
+        <p class="hero__desc" id="heroDesc" aria-label="Final-year Electronics and Communication Engineering student at BITS Pilani, Hyderabad Campus. I build hardware-software systems grounded in rigorous design, implementation, and validation — from RTL processors and gimbal control loops to ML-driven wireless network optimisation."></p>
+      </div>
     </div>
   </section>
 
@@ -205,7 +228,6 @@
     <h2 class="sec-title">Who I am</h2>
     <div class="about__body">
       <p>
-        Final-year ECE student with a strong focus on computer architecture and hardware–software co-design, supported by a solid foundation in embedded systems,  architecture and digital/VLSI design. Experienced in system-level modeling, embedded control, and timing and performance analysis across hardware–software boundaries. Demonstrated discipline and originality in solving and executing complex, long-term technical and interdisciplinary problems.
         I am a final-year undergraduate at BITS Pilani, Hyderabad Campus, majoring in Electronics and Communication Engineering (CGPA&nbsp;8.01/10).
         My work spans <code>VLSI design</code>, <code>digital IC design</code>, <code>computer architecture</code>, <code>embedded control</code>,
         and applied research in wireless communication systems and semiconductor device fabrication.
@@ -311,7 +333,7 @@
             <span class="chip">Verilog</span><span class="chip">Xilinx Vivado</span><span class="chip">CDC</span>
           </div>
           <!-- PLACEHOLDER: Replace # with GitHub repo URL -->
-          <a href="projects.html#async-fifo" class="read-more">read more →</a>
+          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
         </div>
       </div>
 
@@ -329,7 +351,7 @@
             <span class="chip">Verilog</span><span class="chip">Vivado</span><span class="chip">Computer Architecture</span>
           </div>
           <!-- PLACEHOLDER: Replace # with GitHub repo URL -->
-         <a href="projects.html#riscv" class="read-more">read more →</a>
+          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
         </div>
       </div>
 
@@ -347,8 +369,7 @@
             <span class="chip">Python</span><span class="chip">DQN</span><span class="chip">GNN</span><span class="chip">LEO</span>
           </div>
           <!-- PLACEHOLDER: Replace # with report / GitHub URL -->
-          <a href="projects.html#leo-routing" class="read-more">read more →</a>
-
+          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
         </div>
       </div>
 
@@ -366,7 +387,7 @@
             <span class="chip">MATLAB</span><span class="chip">STAR-RIS</span><span class="chip">6G</span>
           </div>
           <!-- PLACEHOLDER: Replace # with paper draft / report URL -->
-         <a href="projects.html#star-ris" class="read-more">read more →</a>
+          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
         </div>
       </div>
 
@@ -384,7 +405,7 @@
             <span class="chip">MATLAB</span><span class="chip">Stochastic Geometry</span><span class="chip">Beamforming</span>
           </div>
           <!-- PLACEHOLDER: Replace # with project report URL -->
-          <a href="projects.html#coverage-hole" class="read-more">read more →</a>
+          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
         </div>
       </div>
 
@@ -402,7 +423,7 @@
             <span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">Jetson Nano</span>
           </div>
           <!-- PLACEHOLDER: Replace # with report / repo URL -->
-          <a href="projects.html#collision-avoidance" class="read-more">read more →</a>
+          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
         </div>
       </div>
 
@@ -590,6 +611,28 @@
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target); } });
   }, {threshold: 0.06});
   document.querySelectorAll(".fade").forEach(el => io.observe(el));
+
+  // Typewriter for hero description
+  (function(){
+    const el = document.getElementById('heroDesc');
+    const text = "Final-year Electronics & Communication Engineering student at BITS Pilani, Hyderabad Campus. I build hardware-software systems grounded in rigorous design, implementation, and validation — from RTL processors and gimbal control loops to ML-driven wireless network optimisation.";
+    let i = 0;
+    const cursor = document.createElement('span');
+    cursor.className = 'tw-cursor';
+    el.appendChild(cursor);
+    const speed = 18; // ms per character
+    function type(){
+      if(i < text.length){
+        cursor.insertAdjacentText('beforebegin', text[i]);
+        i++;
+        setTimeout(type, speed);
+      }
+      // cursor stays blinking after done
+    }
+    // slight delay so page paints first
+    setTimeout(type, 600);
+  })();
+
 </script>
 
 </body>
