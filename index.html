@@ -182,8 +182,8 @@
       <a href="#about">About</a>
       <a href="education.html">Education</a>
       <a href="projects.html">Projects</a>
-      <a href="#experience.html">Experience</a>
-      <a href="#contact">contact</a>
+      <a href="experience.html">Experience</a>
+      <a href="contact.html">Contact</a>
     </nav>
     <div class="hdr__actions">
       <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">[ light ]</button>
@@ -196,8 +196,8 @@
       <a href="#about">About</a>
       <a href="education.html">Education</a>
       <a href="projects.html">Projects</a>
-      <a href="#experience.html">Experience</a>
-      <a href="#contact">contact</a>
+      <a href="experience.html">Experience</a>
+      <a href="contact.html">Contact</a>
   </nav>
 </header>
 
@@ -327,206 +327,19 @@
 
   <hr class="divider">
 
-  <!-- ═══ PROJECTS ═══ -->
-  <section class="wrap fade" id="projects">
-    <p class="sec-label">projects</p>
-    <h2 class="sec-title">Things I've built</h2>
-    <div class="card-grid">
+<section class="wrap fade">
+  <h2 class="sec-title">What else I do</h2>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap">
+    <a href="projects.html" class="btn-primary" style="font-family:var(--mono);font-size:var(--t-sm);padding:1.25rem 2.5rem;display:flex;align-items:center;gap:.6rem">
+      Things I've Built ↗
+    </a>
+    <a href="experience.html" class="btn-outline" style="font-family:var(--mono);font-size:var(--t-sm);padding:1.25rem 2.5rem;display:flex;align-items:center;gap:.6rem">
+      Where I've Worked ↗
+    </a>
+  </div>
+</section>
 
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Asynchronous FIFO</h3>
-          <span class="card__meta">VLSI · RTL</span>
-        </div>
-        <p class="card__desc">
-          CDC FIFO with Gray-coded pointers and dual flip-flop synchronizers to eliminate metastability across asynchronous clock domains.
-          FSM-based handshake for reliable single-word transfers.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">Verilog</span><span class="chip">Xilinx Vivado</span><span class="chip">CDC</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with GitHub repo URL -->
-          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Pipelined RISC-V Processor</h3>
-          <span class="card__meta">Architecture · RTL</span>
-        </div>
-        <p class="card__desc">
-          5-stage pipelined RISC processor with full datapath, control logic, hazard detection, and data forwarding.
-          Custom R/I/J-type ISA; verified via waveform simulation in Xilinx Vivado.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">Verilog</span><span class="chip">Vivado</span><span class="chip">Computer Architecture</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with GitHub repo URL -->
-          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">ML &amp; QoS-Aware LEO Routing</h3>
-          <span class="card__meta">Networks · ML</span>
-        </div>
-        <p class="card__desc">
-          DQN-based adaptive path selection and GNN-based topology representation for LEO inter-satellite networks.
-          5–8% satisfaction gain and 30–50 ms delay reduction over benchmark routing methods.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">Python</span><span class="chip">DQN</span><span class="chip">GNN</span><span class="chip">LEO</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with report / GitHub URL -->
-          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">STAR-RIS Resource Allocation</h3>
-          <span class="card__meta">6G · Comms Research</span>
-        </div>
-        <p class="card__desc">
-          Mathematical model for resource allocation in STAR-RIS-assisted MS-protocol networks.
-          Derived analytical bounds quantifying phase-error vs. element-allocation trade-offs for above-benchmark data-rate performance.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">MATLAB</span><span class="chip">STAR-RIS</span><span class="chip">6G</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with paper draft / report URL -->
-          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Smart Coverage Hole Remediation</h3>
-          <span class="card__meta">Wireless · Simulation</span>
-        </div>
-        <p class="card__desc">
-          MATLAB stochastic network simulator using Poisson Point Processes for SINR mapping and coverage-hole detection.
-          Greedy STAR-RIS beamforming placement raised coverage from ~55% to 100% with only two RIS units.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">MATLAB</span><span class="chip">Stochastic Geometry</span><span class="chip">Beamforming</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with project report URL -->
-          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Embedded Collision Avoidance</h3>
-          <span class="card__meta">Embedded · Vision</span>
-        </div>
-        <p class="card__desc">
-          Embedded vision platform on Raspberry Pi and NVIDIA Jetson Nano for onboard autonomous obstacle detection and evasive action triggering
-          using an OpenCV-based real-time image processing pipeline.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">Jetson Nano</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with report / repo URL -->
-          <a href="#" class="read-more" target="_blank" rel="noopener noreferrer">read more →</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ═══ EXPERIENCE ═══ -->
-  <section class="wrap fade" id="experience">
-    <p class="sec-label">experience</p>
-    <h2 class="sec-title">Where I've worked</h2>
-    <div class="card-grid">
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Embedded AI Intern</h3>
-          <span class="card__meta">Jan 2026 – Present</span>
-        </div>
-        <p class="card__desc">
-          Inferigence Quotient Pvt. Ltd. · Bengaluru<br>
-          Designed a cascaded closed-loop 3-axis gimbal control system on Teensy 4.x with interrupt-driven PID tuning.
-          Validated control performance via MATLAB/Simulink modelling against QGroundControl flight telemetry.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">Teensy 4.x</span><span class="chip">PID</span><span class="chip">MATLAB/Simulink</span><span class="chip">QGC</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with /experience/inferigence.html once you create sub-page -->
-          <a href="#" class="read-more">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Undergraduate Researcher</h3>
-          <span class="card__meta">Sep 2024 – Dec 2025</span>
-        </div>
-        <p class="card__desc">
-          Signal Processing &amp; Communications Research Group · BITS Pilani Hyderabad<br>
-          Developed STAR-RIS resource allocation models and stochastic wireless network simulators for 6G research with the Dept. of EEE.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">MATLAB</span><span class="chip">6G</span><span class="chip">STAR-RIS</span><span class="chip">Research</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with /experience/bits-research.html -->
-          <a href="#" class="read-more">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Summer Research Intern</h3>
-          <span class="card__meta">May 2025 – Jul 2025</span>
-        </div>
-        <p class="card__desc">
-          IEEE Signal Processing Society · Remote<br>
-          Led the Typing &amp; Mouse Behaviour Analysis module within the "AI for Passive Mental Health Monitoring" project — Python-based keystroke/cursor feature engineering for ML-driven stress detection.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">Python</span><span class="chip">ML</span><span class="chip">Behavioural Features</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with /experience/ieee-sps.html -->
-          <a href="#" class="read-more">read more →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__head">
-          <h3 class="card__title">Summer Research Intern</h3>
-          <span class="card__meta">May 2024 – Jul 2024</span>
-        </div>
-        <p class="card__desc">
-          Centre for Materials for Electronics Technology (C-MET) · Pune<br>
-          Designed photolithography masks for low-temperature MOSFETs using FreeCAD and automated Keithley characterisation workflows via QCoDeS.
-        </p>
-        <div class="card__footer">
-          <div class="card__chips">
-            <span class="chip">FreeCAD</span><span class="chip">QCoDeS</span><span class="chip">Semiconductor Fab</span>
-          </div>
-          <!-- PLACEHOLDER: Replace # with /experience/cmet.html -->
-          <a href="#" class="read-more">read more →</a>
-        </div>
-      </div>
-
-    </div>
-
+ 
 
   <hr class="divider">
 
@@ -573,8 +386,7 @@
 </main>
 
 <footer class="footer">
-  <span class="footer__copy">© 2026 Apoorv Vuppulury · BITS Pilani Hyderabad</span>
-  <span class="footer__status"><span class="status-dot"></span>online</span>
+  <span class="footer__copy">© 2026 Apoorv Vuppulury</span>
 </footer>
 
 <script>
