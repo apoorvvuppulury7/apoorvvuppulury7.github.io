@@ -97,7 +97,9 @@
     .sem-block li::before{content:"▸";position:absolute;left:0;color:var(--text-faint)}
 
     /* NPTEL GRID */
-    .nptel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:.5rem;margin-top:1rem}
+    .nptel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1rem}
+@media(max-width:1100px){.nptel-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.nptel-grid{grid-template-columns:1fr}}
     .nptel-item{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);background:var(--surface-2);border:1px solid var(--border-dim);border-radius:3px;padding:.5rem 1rem;display:flex;align-items:center;gap:.5rem}
     .nptel-item::before{content:"✦";color:var(--primary);font-size:.6rem}
 
