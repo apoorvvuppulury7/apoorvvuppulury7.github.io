@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beyond — Apoorv Vuppulury</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&family=Inter:wght@300..700&display=swap" rel="stylesheet">
+  <style>
+    :root,[data-theme="dark"]{
+      --bg:#0c0e0c;--surface:#111411;--surface-2:#161a16;
+      --border:rgba(0,255,136,0.10);--border-dim:rgba(255,255,255,0.05);
+      --text:#dde8dd;--text-muted:#7a9a7a;--text-faint:#344a34;
+      --primary:#00ff88;--primary-dim:#00cc6a;--primary-faint:rgba(0,255,136,0.07);
+      --primary-glow:0 0 16px rgba(0,255,136,0.3);--amber:#ffb300;
+      --mono:"JetBrains Mono","Courier New",monospace;
+      --sans:"Inter",system-ui,sans-serif;
+      --ease:180ms cubic-bezier(0.16,1,0.3,1);
+      --content:1400px;--r:6px;
+      --t-xs:.72rem;--t-sm:.85rem;--t-base:.9375rem;--t-lg:1.125rem;
+      --t-xl:clamp(1.5rem,3vw,2.25rem);
+    }
+    [data-theme="light"]{
+      --bg:#f2f5f2;--surface:#eaeeea;--surface-2:#e2e7e2;
+      --border:rgba(0,100,50,0.15);--border-dim:rgba(0,0,0,0.06);
+      --text:#141e14;--text-muted:#3a5a3a;--text-faint:#90a890;
+      --primary:#007a40;--primary-dim:#005e30;--primary-faint:rgba(0,122,64,0.07);
+      --primary-glow:0 0 10px rgba(0,122,64,0.2);--amber:#b07000;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:var(--t-base);line-height:1.65;min-height:100dvh;overflow-x:hidden;transition:background var(--ease),color var(--ease)}
+    a{color:inherit;text-decoration:none}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+    ul{list-style:none}
+    :focus-visible{outline:1px solid var(--primary);outline-offset:3px;border-radius:3px}
+
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(var(--border-dim) 1px,transparent 1px),linear-gradient(90deg,var(--border-dim) 1px,transparent 1px);
+      background-size:48px 48px;
+      mask-image:radial-gradient(ellipse 90% 50% at 50% 0%,black 20%,transparent 100%)}
+
+    .hdr{position:sticky;top:0;z-index:100;border-bottom:1px solid transparent;transition:background var(--ease),border-color var(--ease)}
+    .hdr.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(20px);border-bottom-color:var(--border)}
+    .hdr__inner{max-width:var(--content);margin-inline:auto;padding:.9rem clamp(1.5rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .logo{font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);display:flex;align-items:center}
+    .logo__cursor{display:inline-block;width:8px;height:1.1em;background:var(--primary);animation:blink 1.1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .nav{display:flex;align-items:center;gap:1.4rem}
+    .nav a{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;transition:color var(--ease)}
+    .nav a:hover,.nav a.active{color:var(--primary)}
+    .hdr__actions{display:flex;align-items:center;gap:.75rem}
+    .theme-btn{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);padding:.2rem .5rem;border:1px solid var(--border-dim);border-radius:3px;transition:color var(--ease),border-color var(--ease)}
+    .theme-btn:hover{color:var(--primary);border-color:var(--border)}
+    .btn-cv{font-family:var(--mono);font-size:var(--t-xs);padding:.4rem 1rem;border:1px solid var(--primary);border-radius:var(--r);background:var(--primary-faint);color:var(--primary);letter-spacing:.05em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease)}
+    .btn-cv:hover{background:rgba(0,255,136,0.14);box-shadow:var(--primary-glow)}
+    .mobile-btn{display:none;color:var(--text-muted);font-size:1.2rem;padding:.25rem}
+    .mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);z-index:99}
+    .mobile-nav.open{display:flex;flex-direction:column}
+    .mobile-nav a{font-family:var(--mono);font-size:var(--t-sm);padding:1rem 1.5rem;color:var(--text-muted);border-bottom:1px solid var(--border-dim);transition:color var(--ease)}
+    .mobile-nav a:hover{color:var(--primary)}
+
+    .wrap{max-width:var(--content);margin-inline:auto;padding:clamp(3rem,8vw,5rem) clamp(1.5rem,4vw,3rem);position:relative;z-index:1}
+    .sec-label{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+    .sec-label::before{content:"//";color:var(--text-faint)}
+    .sec-title{font-family:var(--mono);font-size:var(--t-xl);font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:clamp(2rem,4vw,3rem)}
+    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2.5rem;transition:color var(--ease)}
+    .back-link:hover{color:var(--primary)}
+
+    .intro-block{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:2rem 2.25rem;margin-bottom:2rem;position:relative;overflow:hidden}
+    .intro-block::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary);box-shadow:var(--primary-glow)}
+    .intro-block__text{font-family:var(--mono);font-size:var(--t-lg);color:var(--text-muted);line-height:1.75;max-width:80ch}
+    .intro-block__text span{color:var(--primary)}
+
+    .section-nav{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+    .sec-btn{font-family:var(--mono);font-size:var(--t-sm);padding:1rem 2rem;border-radius:var(--r);letter-spacing:.04em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease),color var(--ease),border-color var(--ease)}
+    .sec-btn.primary{background:var(--primary);color:var(--bg);border:1px solid var(--primary);font-weight:700}
+    .sec-btn.primary:hover{background:var(--primary-dim);box-shadow:var(--primary-glow)}
+    .sec-btn.outline{background:transparent;color:var(--text-muted);border:1px solid var(--border)}
+    .sec-btn.outline:hover{color:var(--primary);border-color:var(--border)}
+    .section-hint{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);margin-bottom:2.5rem}
+    .section-hint span{color:var(--primary)}
+
+    /* EXP CARDS */
+    .exp-timeline{display:flex;flex-direction:column;gap:1.5rem}
+    .exp-card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.75rem 2rem;position:relative;overflow:hidden;transition:border-color var(--ease),box-shadow var(--ease)}
+    .exp-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--text-faint);transition:background var(--ease),box-shadow var(--ease)}
+    .exp-card:hover{border-color:var(--border);box-shadow:0 0 24px rgba(0,255,136,.06)}
+    .exp-card:hover::before{background:var(--primary);box-shadow:var(--primary-glow)}
+    .exp-card__head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.25rem}
+    .exp-card__title{font-family:var(--mono);font-size:var(--t-lg);font-weight:700;color:var(--text)}
+    .exp-card__org{font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);margin-top:.2rem}
+    .exp-card__date{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);white-space:nowrap}
+    .exp-card__desc{margin-top:.85rem;display:flex;flex-direction:column;gap:.5rem}
+    .exp-card__desc p{font-size:var(--t-sm);color:var(--text-muted);line-height:1.75}
+    .exp-card__desc ul{display:flex;flex-direction:column;gap:.35rem}
+    .exp-card__desc li{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7;padding-left:1rem;position:relative}
+    .exp-card__desc li::before{content:"▸";position:absolute;left:0;color:var(--primary)}
+    .exp-card__footer{display:flex;align-items:center;flex-wrap:wrap;gap:.75rem;margin-top:1.1rem;padding-top:.85rem;border-top:1px solid var(--border-dim)}
+    .chips{display:flex;flex-wrap:wrap;gap:.25rem}
+    .chip{font-family:var(--mono);font-size:var(--t-xs);padding:2px .5rem;background:var(--surface-2);border:1px solid var(--border-dim);border-radius:3px;color:var(--text-muted)}
+
+    /* HOBBY CARDS */
+    .hobbies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:1rem}
+    .hobby-card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.5rem;transition:border-color var(--ease),box-shadow var(--ease);position:relative;overflow:hidden}
+    .hobby-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--text-faint);transition:background var(--ease)}
+    .hobby-card:hover{border-color:var(--border);box-shadow:0 0 20px rgba(0,255,136,.06)}
+    .hobby-card:hover::before{background:var(--primary)}
+    .hobby-card__icon{font-size:1.75rem;margin-bottom:.6rem;line-height:1}
+    .hobby-card__title{font-family:var(--mono);font-size:var(--t-sm);font-weight:700;color:var(--text);margin-bottom:.5rem}
+    .hobby-card__desc{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7}
+    .hobby-card__tags{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.75rem}
+
+
+    /* LOGO */
+    .exp-card__body{display:flex;gap:1.5rem;align-items:flex-start}
+    .exp-card__logo{width:192px;height:192px;flex-shrink:0;border-radius:var(--r);border:1px solid var(--border-dim);background:var(--surface-2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .exp-card__logo img{max-width:180px;max-height:180px;width:auto;height:auto;object-fit:contain;padding:10px}
+    .exp-card__logo-text{font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--primary);text-align:center;line-height:1.3;padding:6px}
+    .exp-card__content{flex:1;min-width:0}
+    .content-section.hidden{display:none}
+    .fade{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+    .fade.visible{opacity:1;transform:none}
+
+    .footer{max-width:var(--content);margin-inline:auto;padding:2rem clamp(1.5rem,4vw,3rem);border-top:1px solid var(--border-dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:1}
+    .footer__copy{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
+
+    @media(max-width:720px){
+      .nav,.btn-cv{display:none}
+      .mobile-btn{display:block}
+      .exp-card__head{flex-direction:column}
+      .section-nav{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="hdr__inner">
+    <div class="logo">apoorv@portfolio<span class="logo__cursor"></span></div>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html#about">About</a>
+      <a href="education.html">Education</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="beyond.html" class="active">Beyond</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="hdr__actions">
+      <button class="theme-btn" id="themeBtn">[ light ]</button>
+      <button class="mobile-btn" id="mobileBtn">&#9776;</button>
+      <a href="Apoorv_Resume_110626" class="btn-cv" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html#about">About</a>
+    <a href="education.html">Education</a>
+    <a href="projects.html">Projects</a>
+    <a href="experience.html">Experience</a>
+    <a href="beyond.html">Beyond</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap fade">
+    <a href="index.html" class="back-link">&larr; back to home</a>
+    <p class="sec-label">beyond</p>
+    <h1 class="sec-title">Beyond the Lab</h1>
+
+    <div class="intro-block">
+      <p class="intro-block__text">
+        I'm really glad you made it here &mdash; this is the page where you get to know
+        <span>who I am beyond the lab and the studies</span>. The work tells you what I build;
+        this page tells you why I build it.
+      </p>
+    </div>
+
+    <div class="section-nav">
+      <button class="sec-btn primary" id="btn-por" onclick="showSection('por', this)">Positions of Responsibility</button>
+      <button class="sec-btn outline" id="btn-hobbies" onclick="showSection('hobbies', this)">Hobbies &amp; Interests</button>
+    </div>
+    <p class="section-hint">Select a section above &mdash; <span>only that section</span> will appear below.</p>
+
+    <!-- ══ POR SECTION ══ -->
+    <div id="por-section" class="content-section">
+      <h2 class="sec-title">Positions of Responsibility</h2>
+      <div class="exp-timeline">
+
+        <!-- SWMC -->
+        <div class="exp-card">
+          <div class="exp-card__body">
+            <div class="exp-card__logo">
+              <img src="assets/swmc-logo.png" alt="SWMC"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <div class="exp-card__logo-text" style="display:none">SWMC</div>
+            </div>
+            <div class="exp-card__content">
+              <div class="exp-card__head">
+                <div>
+                  <div class="exp-card__title">Training &amp; Counselling Lead</div>
+                  <div class="exp-card__org">Student Welfare &amp; Mentorship Committee (SWMC) &middot; BPHC</div>
+                </div>
+                <span class="exp-card__date">Jun 2024 &ndash; Aug 2025</span>
+              </div>
+              <div class="exp-card__desc">
+                <p><strong style="color:var(--text)">Founding member</strong> and integral part of the leadership team of SWMC &mdash; a committee bridging the gaps between students and the administration.</p>
+                <ul>
+                  <li>Led a team of <strong style="color:var(--text)">150 student-mentors</strong> and pursued collaborations with multiple technical and administrative organisations to provide relevant resources to the student body.</li>
+                  <li>Designed and executed a robust mentorship programme addressing multiple issues faced by students from Day 0, greatly impacting more than <strong style="color:var(--text)">500 students</strong> in their first year.</li>
+                  <li>Solely acted as the face of new technical teams to administrative bodies, helping them set up and develop with resources and ample funding.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SFC -->
+        <div class="exp-card">
+          <div class="exp-card__body">
+            <div class="exp-card__logo">
+              <img src="assets/bits-logo.png" alt="BITS Pilani"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <div class="exp-card__logo-text" style="display:none">BITS<br>EEE</div>
+            </div>
+            <div class="exp-card__content">
+              <div class="exp-card__head">
+                <div>
+                  <div class="exp-card__title">Student&ndash;Faculty Council Member</div>
+                  <div class="exp-card__org">Dept. of Electrical &amp; Electronics Engineering (EEE) &middot; BPHC</div>
+                </div>
+                <span class="exp-card__date">Aug 2024 &ndash; Dec 2025</span>
+              </div>
+              <div class="exp-card__desc">
+                <p>One of <strong style="color:var(--text)">15 members</strong> of the Student&ndash;Faculty Council, an administrative body aiming to improve academic quality for courses under the Dept. of EEE.</p>
+                <ul>
+                  <li>Served as representative for <strong style="color:var(--text)">Digital Design, Microwave Engineering, Communication Networks, Information Theory &amp; Coding,</strong> and <strong style="color:var(--text)">Embedded Systems Design</strong>.</li>
+                  <li>Worked to include <strong style="color:var(--text)">lab components</strong> in certain courses to ensure industry-level software exposure for students.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHoEnix -->
+        <div class="exp-card">
+          <div class="exp-card__body">
+            <div class="exp-card__logo">
+              <img src="assets/phoenix-logo.png" alt="PHoEnix"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <div class="exp-card__logo-text" style="display:none">PHoEnix</div>
+            </div>
+            <div class="exp-card__content">
+              <div class="exp-card__head">
+                <div>
+                  <div class="exp-card__title">Senior Advisor</div>
+                  <div class="exp-card__org">PHoEnix Association &middot; BPHC</div>
+                </div>
+                <span class="exp-card__date">Aug 2023 &ndash; Dec 2025</span>
+              </div>
+              <div class="exp-card__desc">
+                <ul>
+                  <li>Worked to improve the structure of the Association and diversify projects into more <strong style="color:var(--text)">real-life and research-heavy</strong> problems.</li>
+                  <li>Served as an integral part of the <strong style="color:var(--text)">Editorial Team</strong>; helped set up <strong style="color:var(--text)"><em>THE PULSE</em></strong> &mdash; a publication detailing activities, successes, and tips for navigating campus life.</li>
+                  <li>Received a <strong style="color:var(--text)">Certificate of Appreciation</strong> for contributions to the Dept. of EEE.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- E-Cell -->
+        <div class="exp-card">
+          <div class="exp-card__body">
+            <div class="exp-card__logo">
+              <img src="assets/ecell-logo.png" alt="E-Cell BPHC"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <div class="exp-card__logo-text" style="display:none">E-Cell</div>
+            </div>
+            <div class="exp-card__content">
+              <div class="exp-card__head">
+                <div>
+                  <div class="exp-card__title">IIC Coordinator</div>
+                  <div class="exp-card__org">Entrepreneurship Cell (E-Cell) &middot; BPHC</div>
+                </div>
+                <span class="exp-card__date">Jan 2023 &ndash; Aug 2024</span>
+              </div>
+              <div class="exp-card__desc">
+                <ul>
+                  <li>Acted as a <strong style="color:var(--text)">direct link between faculty, administration, and the E-Cell</strong> to ensure smooth flow of all events and speaker sessions.</li>
+                  <li>Oversaw <strong style="color:var(--text)">event finances</strong>, summarised activities, and submitted reports to the administration ensuring timely completion and financial accountability.</li>
+                  <li>As <strong style="color:var(--text)">Senior Associate</strong>, headed and guided the Research Team in producing case studies and analysing market and startup trends.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BITSMUN -->
+        <div class="exp-card">
+          <div class="exp-card__body">
+            <div class="exp-card__logo">
+              <img src="assets/bitsmun-logo.png" alt="BITSMUN"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <div class="exp-card__logo-text" style="display:none">BITS<br>MUN</div>
+            </div>
+            <div class="exp-card__content">
+              <div class="exp-card__head">
+                <div>
+                  <div class="exp-card__title">USG &mdash; Venue &amp; Operations</div>
+                  <div class="exp-card__org">BITSMUN &apos;24 &middot; BPHC</div>
+                </div>
+                <span class="exp-card__date">May 2024 &ndash; Nov 2024</span>
+              </div>
+              <div class="exp-card__desc">
+                <ul>
+                  <li>Part of the leadership team; led a <strong style="color:var(--text)">3-day conference with 600+ delegates</strong>, overseeing end-to-end logistics, scheduling, and on-ground execution with zero operational disruptions.</li>
+                  <li>Coordinated <strong style="color:var(--text)">cross-functional teams and vendors</strong> to manage crowd flow, infrastructure readiness, and real-time issue resolution within timelines and operational constraints.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+        <!-- ══ HOBBIES SECTION ══ -->
+    <div id="hobbies-section" class="content-section hidden">
+      <p class="sec-label">hobbies &amp; interests</p>
+      <h2 class="sec-title">What I Do for Fun</h2>
+      <div class="hobbies-grid">
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">🏸</div>
+          <div class="hobby-card__title">Badminton</div>
+          <div class="hobby-card__desc">Competed at state level in the U13 and U15 categories. Badminton taught me that reflexes and strategy matter as much as raw power &mdash; a lesson I carry into everything.</div>
+          <div class="hobby-card__tags">
+            <span class="chip">State Level</span><span class="chip">U13</span><span class="chip">U15</span>
+          </div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">⚽</div>
+          <div class="hobby-card__title">Football</div>
+          <div class="hobby-card__desc">A regular on the college grounds. Football is my go-to for clearing my head after long design sessions &mdash; there's something about the chaos of a match that resets the mind.</div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">♟️</div>
+          <div class="hobby-card__title">Chess</div>
+          <div class="hobby-card__desc">Chess sharpened my ability to think several steps ahead and evaluate trade-offs under pressure &mdash; skills that translate surprisingly well to hardware architecture and system design.</div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">🎱</div>
+          <div class="hobby-card__title">Cue Sports</div>
+          <div class="hobby-card__desc">Billiards and pool &mdash; games of angles, patience, and precision. I find the geometry of a good shot oddly satisfying in the same way a clean RTL schematic is.</div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">🧩</div>
+          <div class="hobby-card__title">Puzzles &amp; Logic Games</div>
+          <div class="hobby-card__desc">Sudoku, KenKen, nonograms, and anything that requires structured deduction. My daily warm-up for the brain before diving into a problem set or a Verilog module.</div>
+          <div class="hobby-card__tags">
+            <span class="chip">Sudoku</span><span class="chip">KenKen</span><span class="chip">Nonograms</span>
+          </div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">📚</div>
+          <div class="hobby-card__title">Books</div>
+          <div class="hobby-card__desc">I read across genres &mdash; from Tolkien's world-building to Sapiens' sweep of history. Currently working through <em>Gödel, Escher, Bach</em>. Some favourites: <em>The Lord of the Rings</em>, <em>Sapiens</em>, <em>The Martian</em>, <em>Atomic Habits</em>.</div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">💍</div>
+          <div class="hobby-card__title">The Lord of the Rings</div>
+          <div class="hobby-card__desc">LOTR is more than a story to me &mdash; it's the most complete world ever built on paper. Tolkien's obsession with language, myth, and moral weight in every sentence mirrors what I aspire to in engineering: building things that are complete, coherent, and built to last.</div>
+          <div class="hobby-card__tags">
+            <span class="chip">Tolkien</span><span class="chip">World-building</span>
+          </div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">🎬</div>
+          <div class="hobby-card__title">Films &amp; TV</div>
+          <div class="hobby-card__desc">Christopher Nolan is my favourite director &mdash; Interstellar and The Prestige sit at the top of my list. I love films that respect the audience's intelligence. Star Wars shaped how I think about mythology and technology coexisting. Currently rewatching <em>Better Call Saul</em>.</div>
+          <div class="hobby-card__tags">
+            <span class="chip">Nolan</span><span class="chip">Star Wars</span><span class="chip">Sci-Fi</span>
+          </div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">🎵</div>
+          <div class="hobby-card__title">Music</div>
+          <div class="hobby-card__desc">My playlist swings between Hans Zimmer's scores and classic rock depending on whether I'm deep in a simulation or need to push through a late-night debug session. Interstellar OST plays on loop during long MATLAB runs.</div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">🌍</div>
+          <div class="hobby-card__title">Travel &amp; Exploration</div>
+          <div class="hobby-card__desc">I find that travelling recalibrates my perspective in ways nothing else does. There's an engineer's curiosity in how different cities solve the same human problems &mdash; infrastructure, density, flow.</div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">✍️</div>
+          <div class="hobby-card__title">Writing</div>
+          <div class="hobby-card__desc">Contributing to THE PULSE at PHoEnix sparked a genuine interest in writing &mdash; particularly in explaining complex ideas clearly. I occasionally write notes and short essays on topics that fascinate me.</div>
+        </div>
+
+        <div class="hobby-card">
+          <div class="hobby-card__icon">🔭</div>
+          <div class="hobby-card__title">Space &amp; Cosmology</div>
+          <div class="hobby-card__desc">A quiet obsession. From Feynman lectures to PBS SpaceTime on YouTube &mdash; the intersection of physics, scale, and the unknown is what originally pulled me toward engineering. LEO satellite networks feel like a natural extension of this.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <span class="footer__copy">&copy; 2026 Apoorv Vuppulury</span>
+</footer>
+
+<script>
+  function showSection(name, btn) {
+    document.getElementById('por-section').classList.add('hidden');
+    document.getElementById('hobbies-section').classList.add('hidden');
+    document.querySelectorAll('.sec-btn').forEach(b => { b.classList.remove('primary'); b.classList.add('outline'); });
+    document.getElementById(name + '-section').classList.remove('hidden');
+    btn.classList.remove('outline');
+    btn.classList.add('primary');
+    setTimeout(() => {
+      document.getElementById(name + '-section').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 50);
+  }
+
+  const root = document.documentElement;
+  const themeBtn = document.getElementById("themeBtn");
+  let dark = true;
+  function applyTheme(){ root.setAttribute("data-theme", dark?"dark":"light"); themeBtn.textContent = dark?"[ light ]":"[ dark ]"; }
+  applyTheme();
+  themeBtn.addEventListener("click", () => { dark=!dark; applyTheme(); });
+
+  const hdr = document.getElementById("hdr");
+  window.addEventListener("scroll", () => hdr.classList.toggle("scrolled", scrollY > 24), {passive:true});
+
+  const mobileBtn = document.getElementById("mobileBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  mobileBtn.addEventListener("click", () => { const o=mobileNav.classList.toggle("open"); mobileBtn.setAttribute("aria-expanded",String(o)); });
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, {threshold:0.06});
+  document.querySelectorAll(".fade").forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
