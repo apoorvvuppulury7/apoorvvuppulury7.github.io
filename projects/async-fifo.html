@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asynchronous FIFO — Apoorv Vuppulury</title>
+  <meta name="description" content="CDC FIFO with Gray-coded pointers and dual flip-flop synchronizers — Verilog, Xilinx Vivado." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+  <style>
+    :root,[data-theme="dark"]{
+      --bg:#0c0e0c;--surface:#111411;--surface-2:#161a16;--surface-3:#1c211c;
+      --border:rgba(0,255,136,0.10);--border-dim:rgba(255,255,255,0.05);
+      --text:#dde8dd;--text-muted:#7a9a7a;--text-faint:#344a34;
+      --primary:#00ff88;--primary-dim:#00cc6a;--primary-faint:rgba(0,255,136,0.07);
+      --primary-glow:0 0 16px rgba(0,255,136,0.3);--amber:#ffb300;
+      --mono:"JetBrains Mono","Courier New",monospace;
+      --sans:"Inter",system-ui,sans-serif;
+      --ease:180ms cubic-bezier(0.16,1,0.3,1);
+      --content:960px;--r:6px;
+      --t-xs:.72rem;--t-sm:.85rem;--t-base:.9375rem;--t-lg:1.125rem;
+      --t-xl:clamp(1.5rem,3vw,2.25rem);--t-hero:clamp(2.8rem,7vw,6rem);
+    }
+    [data-theme="light"]{
+      --bg:#f2f5f2;--surface:#eaeeea;--surface-2:#e2e7e2;--surface-3:#d8dfd8;
+      --border:rgba(0,100,50,0.15);--border-dim:rgba(0,0,0,0.06);
+      --text:#141e14;--text-muted:#3a5a3a;--text-faint:#90a890;
+      --primary:#007a40;--primary-dim:#005e30;--primary-faint:rgba(0,122,64,0.07);
+      --primary-glow:0 0 10px rgba(0,122,64,0.2);--amber:#b07000;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:4.5rem;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:var(--t-base);line-height:1.65;min-height:100dvh;overflow-x:hidden;transition:background var(--ease),color var(--ease)}
+    a{color:inherit;text-decoration:none}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+    ul{list-style:none}
+    :focus-visible{outline:1px solid var(--primary);outline-offset:3px;border-radius:3px}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(var(--border-dim) 1px,transparent 1px),linear-gradient(90deg,var(--border-dim) 1px,transparent 1px);
+      background-size:48px 48px;
+      mask-image:radial-gradient(ellipse 90% 50% at 50% 0%,black 20%,transparent 100%)}
+
+    /* HEADER */
+    .hdr{position:sticky;top:0;z-index:100;border-bottom:1px solid transparent;transition:background var(--ease),border-color var(--ease)}
+    .hdr.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom-color:var(--border)}
+    .hdr__inner{max-width:var(--content);margin-inline:auto;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .logo{font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);display:flex;align-items:center}
+    .logo__cursor{display:inline-block;width:8px;height:1.1em;background:var(--primary);animation:blink 1.1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .nav{display:flex;align-items:center;gap:1.4rem}
+    .nav a{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;transition:color var(--ease)}
+    .nav a:hover,.nav a.active{color:var(--primary)}
+    .hdr__actions{display:flex;align-items:center;gap:.75rem}
+    .theme-btn{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);padding:.2rem .5rem;border:1px solid var(--border-dim);border-radius:3px;transition:color var(--ease),border-color var(--ease)}
+    .theme-btn:hover{color:var(--primary);border-color:var(--border)}
+    .btn-cv{font-family:var(--mono);font-size:var(--t-xs);padding:.4rem 1rem;border:1px solid var(--primary);border-radius:var(--r);background:var(--primary-faint);color:var(--primary);letter-spacing:.05em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease)}
+    .btn-cv:hover{background:rgba(0,255,136,0.14);box-shadow:var(--primary-glow)}
+    .mobile-btn{display:none;color:var(--text-muted);font-size:1.2rem;padding:.25rem}
+    .mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);z-index:99}
+    .mobile-nav.open{display:flex;flex-direction:column}
+    .mobile-nav a{font-family:var(--mono);font-size:var(--t-sm);padding:1rem 1.5rem;color:var(--text-muted);border-bottom:1px solid var(--border-dim);transition:color var(--ease)}
+    .mobile-nav a:hover{color:var(--primary)}
+
+    /* LAYOUT */
+    .proj-wrap{max-width:var(--content);margin-inline:auto;padding:clamp(3rem,8vw,5rem) 1.5rem;position:relative;z-index:1}
+    .divider{border:none;border-top:1px solid var(--border-dim);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
+    
+    
+
+    /* BACK LINK */
+    .back-link{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:2.5rem;transition:color var(--ease)}
+    .back-link:hover{color:var(--primary)}
+
+    /* HERO */
+    .proj-header{margin-bottom:clamp(2rem,4vw,3rem)}
+    .proj-course-tag{display:inline-block;font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);background:var(--primary-faint);border:1px solid var(--primary);border-radius:3px;padding:.25rem .75rem;letter-spacing:.04em;margin-bottom:1.25rem}
+    .proj-title{font-family:var(--mono);font-size:var(--t-hero);font-weight:800;line-height:.95;letter-spacing:-.04em;color:var(--text);margin-bottom:1.25rem}
+    .proj-title .hl{color:var(--primary)}
+    .proj-desc{font-size:var(--t-base);color:var(--text-muted);line-height:1.8;margin-bottom:2rem}
+    .proj-cta{display:flex;gap:.75rem;flex-wrap:wrap}
+    .btn-primary{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;background:var(--primary);color:var(--bg);border:1px solid var(--primary);border-radius:var(--r);font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background var(--ease),box-shadow var(--ease);display:inline-block}
+    .btn-primary:hover{background:var(--primary-dim);box-shadow:var(--primary-glow)}
+    .btn-outline{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;border:1px solid var(--border);border-radius:var(--r);color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;transition:color var(--ease),border-color var(--ease);display:inline-block}
+    .btn-outline:hover{color:var(--primary);border-color:var(--border)}
+
+    /* CONTENT */
+    .content-section{margin-bottom:clamp(2.5rem,5vw,4rem)}
+    .content-section .sec-title{font-family:var(--mono);font-size:var(--t-lg);font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:1.25rem}
+
+    /* BODY TEXT */
+    .body-text{color:var(--text-muted);line-height:1.8;max-width:72ch;font-size:var(--t-base)}
+    .body-text p+p{margin-top:1rem}
+    .body-text code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 5px;border-radius:3px}
+
+    /* TOOLS GRID */
+    .tools-grid{display:flex;flex-direction:column;gap:0;border:1px solid var(--border-dim);border-radius:var(--r);overflow:hidden;margin-top:1rem}
+    .tool-row{display:grid;grid-template-columns:160px 1fr;gap:1.5rem;padding:.9rem 1.25rem;border-bottom:1px solid var(--border-dim);transition:background var(--ease)}
+    .tool-row:last-child{border-bottom:none}
+    .tool-row:hover{background:var(--surface-2)}
+    .tool-key{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.08em;text-transform:uppercase;padding-top:.05rem}
+    .tool-val{font-family:var(--mono);font-size:var(--t-sm);color:var(--text-muted);line-height:1.6}
+
+    /* ARCHITECTURE FLOW */
+    .arch-flow{display:flex;align-items:stretch;gap:0;margin:1.5rem 0;overflow-x:auto;padding-bottom:.5rem}
+    .arch-block{background:var(--surface);border:1px solid var(--border-dim);padding:1rem .75rem;min-width:110px;display:flex;flex-direction:column;align-items:center;gap:.4rem;position:relative;transition:border-color var(--ease),box-shadow var(--ease);flex:1}
+    .arch-block:not(:last-child)::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:var(--t-sm);color:var(--primary);z-index:1}
+    .arch-block:hover{border-color:var(--border);box-shadow:0 0 16px rgba(0,255,136,.07)}
+    .arch-block .ab-id{font-family:var(--mono);font-size:var(--t-sm);font-weight:800;color:var(--primary);text-align:center}
+    .arch-block .ab-name{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;text-align:center}
+    .arch-block .ab-desc{font-size:var(--t-xs);color:var(--text-muted);text-align:center;line-height:1.5;margin-top:.25rem}
+
+    /* DETAIL CARDS */
+    .detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:1rem}
+    .detail-card{background:var(--surface);border:1px solid var(--border-dim);border-radius:var(--r);padding:1.25rem 1.5rem;position:relative;overflow:hidden;transition:border-color var(--ease),box-shadow var(--ease)}
+    .detail-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--text-faint);transition:background var(--ease),box-shadow var(--ease)}
+    .detail-card:hover{border-color:var(--border);box-shadow:0 0 20px rgba(0,255,136,.06)}
+    .detail-card:hover::before{background:var(--primary);box-shadow:var(--primary-glow)}
+    .detail-card .dc-icon{font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.08em;margin-bottom:.6rem}
+    .detail-card .dc-title{font-family:var(--mono);font-size:var(--t-sm);font-weight:700;color:var(--text);margin-bottom:.5rem}
+    .detail-card .dc-body{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7}
+    .detail-card .dc-body code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 4px;border-radius:3px}
+
+    /* BULLET LIST */
+    .bullet-list{display:flex;flex-direction:column;gap:.55rem;padding:0;margin-top:.5rem}
+    .bullet-list li{font-size:var(--t-sm);color:var(--text-muted);line-height:1.7;padding-left:1.2rem;position:relative}
+    .bullet-list li::before{content:"›";position:absolute;left:0;color:var(--primary);font-family:var(--mono)}
+    .bullet-list li code{font-family:var(--mono);font-size:.85em;color:var(--primary);background:var(--primary-faint);padding:1px 4px;border-radius:3px}
+
+    /* DATAPATH IMAGE */
+    .datapath-img-wrap{margin:1.5rem 0 2rem;border:1px solid var(--border-dim);border-radius:var(--r);overflow:hidden;background:var(--surface);transition:border-color var(--ease),box-shadow var(--ease)}
+    .datapath-img-wrap:hover{border-color:var(--border);box-shadow:0 0 24px rgba(0,255,136,.07)}
+    .datapath-img{width:100%;display:block;object-fit:contain;background:#fff}
+    .img-caption{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint);padding:.6rem 1rem;border-top:1px solid var(--border-dim);letter-spacing:.03em;line-height:1.6}
+
+    /* FADE */
+    .fade{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+    .fade.visible{opacity:1;transform:none}
+
+    /* FOOTER */
+    .footer{max-width:var(--content);margin-inline:auto;padding:2rem 1.5rem;border-top:1px solid var(--border-dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:1}
+    .footer__copy{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
+
+    @media(max-width:720px){
+      .nav,.btn-cv{display:none}
+      .mobile-btn{display:block}
+      .detail-grid{grid-template-columns:1fr}
+      .arch-block .ab-desc{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="hdr__inner">
+    <div class="logo">apoorv@portfolio<span class="logo__cursor"></span></div>
+    <nav class="nav" aria-label="Primary">
+      <a href="../index.html#about">about</a>
+      <a href="../index.html#skills">skills</a>
+      <a href="../projects.html" class="active">projects</a>
+      <a href="../experience.html">experience</a>
+      <a href="../index.html#contact">contact</a>
+    </nav>
+    <div class="hdr__actions">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">[ light ]</button>
+      <button class="mobile-btn" id="mobileBtn" aria-label="Open menu">&#9776;</button>
+      <a href="../Apoorv_Resume_110626" class="btn-cv" target="_blank" rel="noopener noreferrer">Resume &#8599;</a>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <a href="../index.html#about">about</a>
+    <a href="../index.html#skills">skills</a>
+    <a href="../projects.html">projects</a>
+    <a href="../experience.html">experience</a>
+    <a href="../index.html#contact">contact</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="proj-wrap">
+
+  <a href="../projects.html" class="back-link fade">&larr; all projects</a>
+
+  <!-- ══ HERO ══ -->
+  <div class="proj-header fade">
+    <h1 class="proj-title">Asynchronous<br><span class="hl">FIFO</span><br>Design</h1>
+    <div class="proj-course-tag">ECE F215 &mdash; Digital Design &nbsp;&middot;&nbsp; Design Project</div>
+    <p class="proj-desc">
+      A CDC-safe asynchronous FIFO implemented in Verilog using Gray-coded read and write pointers
+      synchronized across clock domains via dual flip-flop synchronizers. Eliminates metastability
+      for reliable single-word transfers between independent clock domains, verified in Xilinx Vivado.
+    </p>
+    <div class="proj-cta">
+      <a href="https://github.com/apoorvvuppulury7" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo &#8599;</a>
+      <a href="../projects.html" class="btn-outline">&larr; Back to Projects</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ TOOLS & STACK ══ -->
+  <div class="content-section fade">
+    <h2 class="sec-title">Tools &amp; Stack</h2>
+    <div class="tools-grid">
+      <div class="tool-row">
+        <span class="tool-key">Tools</span>
+        <span class="tool-val">Xilinx Vivado</span>
+      </div>
+      <div class="tool-row">
+        <span class="tool-key">Language</span>
+        <span class="tool-val">Verilog HDL</span>
+      </div>
+      <div class="tool-row">
+        <span class="tool-key">Principles</span>
+        <span class="tool-val">Clock Domain Crossing (CDC) &middot; Gray Code Pointers &middot; Dual Flip-Flop Synchronizers &middot; FSM Handshake</span>
+      </div>
+      <div class="tool-row">
+        <span class="tool-key">Reference</span>
+        <span class="tool-val">Cummings, &ldquo;Simulation and Synthesis Techniques for Asynchronous FIFO Design&rdquo; &mdash; SNUG San Jose 2002</span>
+      </div>
+      <div class="tool-row">
+        <span class="tool-key">Output</span>
+        <span class="tool-val">Behavioural Simulation &middot; Waveform Verification &middot; Synthesisable RTL</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ THE PROBLEM ══ -->
+  <div class="content-section fade">
+    <h2 class="sec-title">Why Asynchronous FIFOs Are Hard</h2>
+    <div class="body-text">
+      <p>
+        When data must cross from one clock domain to another, a naive multi-bit counter approach fails because
+        all bits can change simultaneously &mdash; a binary transition like <code>0111 &rarr; 1000</code> has
+        four bits toggling at once. If a receiving flip-flop samples during this transition it can enter a
+        metastable state, producing an unpredictable output that corrupts the FIFO pointer comparison entirely.
+      </p>
+      <p>
+        Most near-correct FIFO designs pass testing 99%+ of the time but carry latent metastability bugs that
+        only surface under specific timing conditions &mdash; often in silicon, never in simulation. The solution
+        is to use <strong style="color:var(--text)">Gray-coded pointers</strong>, where only one bit changes per
+        count transition, so a synchronizer has just one bit at risk per cycle rather than many.
+      </p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ ARCHITECTURE ══ -->
+  <div class="content-section fade">
+    <h2 class="sec-title">FIFO1 Module Partitioning</h2>
+    <div class="body-text">
+      <p>
+        Following the Cummings FIFO Style #1 methodology, the design is partitioned into six Verilog modules,
+        each belonging to a single clock domain. This enables clean synthesis and static timing analysis with
+        no cross-domain combinational logic.
+      </p>
+    </div>
+
+    <!-- Datapath image placeholder -->
+    <div class="datapath-img-wrap">
+      <img src="fifo_diagram.png" alt="FIFO1 block diagram with synchronized pointer comparison"
+           onerror="this.parentElement.style.display='none'" class="datapath-img" />
+      <p class="img-caption">FIFO1 partitioning &mdash; synchronized pointer comparison across clock domains (Cummings 2002, Fig. 4)</p>
+    </div>
+
+    <!-- Module flow -->
+    <div class="arch-flow">
+      <div class="arch-block">
+        <span class="ab-id">fifo1</span>
+        <span class="ab-name">Top</span>
+        <span class="ab-desc">Wrapper only &mdash; instantiates all sub-modules</span>
+      </div>
+      <div class="arch-block">
+        <span class="ab-id">fifomem</span>
+        <span class="ab-name">Memory</span>
+        <span class="ab-desc">Dual-port synchronous RAM buffer</span>
+      </div>
+      <div class="arch-block">
+        <span class="ab-id">sync_r2w</span>
+        <span class="ab-name">R&rarr;W Sync</span>
+        <span class="ab-desc">2-FF sync of rptr into wclk domain</span>
+      </div>
+      <div class="arch-block">
+        <span class="ab-id">sync_w2r</span>
+        <span class="ab-name">W&rarr;R Sync</span>
+        <span class="ab-desc">2-FF sync of wptr into rclk domain</span>
+      </div>
+      <div class="arch-block">
+        <span class="ab-id">wptr_full</span>
+        <span class="ab-name">Full Logic</span>
+        <span class="ab-desc">Write pointer &amp; full flag, wclk domain</span>
+      </div>
+      <div class="arch-block">
+        <span class="ab-id">rptr_empty</span>
+        <span class="ab-name">Empty Logic</span>
+        <span class="ab-desc">Read pointer &amp; empty flag, rclk domain</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ GRAY CODE & CDC ══ -->
+  <div class="content-section fade">
+    <h2 class="sec-title">Gray Code &amp; CDC Design</h2>
+    <div class="detail-grid">
+
+      <div class="detail-card">
+        <div class="dc-icon">GRAY CODE</div>
+        <div class="dc-title">Dual n-bit Gray Code Counter</div>
+        <div class="dc-body">
+          Each pointer is an n-bit Gray code counter that generates both an n-bit sequence
+          (for synchronization across domains) and an (n&minus;1)-bit sequence (for
+          addressing the FIFO memory). The MSB of the (n&minus;1)-bit code is derived by
+          XOR-ing the two MSBs of the n-bit code &mdash; generating a compact dual counter
+          from a single set of flip-flops.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">2-FF SYNC</div>
+        <div class="dc-title">Dual Flip-Flop Synchronizer</div>
+        <div class="dc-body">
+          The <code>sync_r2w</code> and <code>sync_w2r</code> modules each contain two
+          registers clocked by the destination domain. Since the Gray-coded pointer changes
+          only one bit per transition, at most one bit is metastable per cycle &mdash;
+          the two-stage synchronizer resolves this before the pointer is used in full/empty
+          comparisons.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">FULL FLAG</div>
+        <div class="dc-title">Generating FIFO Full</div>
+        <div class="dc-body">
+          Full is detected in the <code>wclk</code> domain when the next write pointer
+          (<code>wgnext</code>) matches the synchronized read pointer (<code>wrptr2</code>)
+          with the MSBs differing and the 2nd MSBs equal. A raw MSB comparison on the
+          (n&minus;1)-bit Gray code fails due to the reflected symmetry of Gray codes, so
+          the 2nd MSB is XOR-corrected before comparison.
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="dc-icon">EMPTY FLAG</div>
+        <div class="dc-title">Generating FIFO Empty</div>
+        <div class="dc-body">
+          Empty is detected in the <code>rclk</code> domain when the next read pointer
+          (<code>rgnext</code>) equals the synchronized write pointer (<code>rwptr2</code>)
+          including MSBs. Both flags are registered outputs &mdash; full and empty assert
+          exactly on time but de-assert pessimistically (2 synchronizer cycles late),
+          preventing overflow and underflow.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ POINTER DESIGN ══ -->
+  <div class="content-section fade">
+    <h2 class="sec-title">Full &amp; Empty Pointer Logic</h2>
+    <div class="body-text">
+      <p>
+        Both pointers are one bit wider than the address bus. The extra MSB tracks how many
+        times each pointer has wrapped, allowing the same numerical address value to mean either
+        empty or full depending on the MSBs.
+      </p>
+    </div>
+    <div class="detail-grid" style="margin-top:1.25rem">
+      <div class="detail-card">
+        <div class="dc-icon">EMPTY COND</div>
+        <div class="dc-title">Empty: All Bits Equal</div>
+        <div class="dc-body">
+          The FIFO is empty when the read pointer and the synchronized write pointer are
+          completely equal, including the MSB. This means both pointers have wrapped the
+          same number of times and the read pointer has caught up to the write pointer.
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="dc-icon">FULL COND</div>
+        <div class="dc-title">Full: MSBs Differ, Rest Equal</div>
+        <div class="dc-body">
+          The FIFO is full when the write pointer has wrapped one more time than the read
+          pointer (MSBs differ) but the lower address bits are equal &mdash; meaning the
+          write pointer has come back around to meet the read pointer from behind.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ VERIFICATION ══ -->
+  <div class="content-section fade">
+    <h2 class="sec-title">Simulation &amp; Testing</h2>
+    <div class="body-text">
+      <p>
+        All modules were verified in Xilinx Vivado using a directed testbench that exercises
+        normal operation, boundary conditions, and CDC corner cases across both clock domains.
+      </p>
+    </div>
+    <ul class="bullet-list" style="margin-top:1rem">
+      <li>Write-to-full sequence confirmed <code>wfull</code> asserted on the correct cycle with no overflow</li>
+      <li>Read-to-empty sequence confirmed <code>rempty</code> asserted correctly with no underflow</li>
+      <li>Simultaneous read and write at the same address boundary verified no pointer aliasing</li>
+      <li>Faster write clock / slower read clock scenario confirmed pessimistic but safe <code>wfull</code> removal</li>
+      <li>Faster read clock / slower write clock scenario confirmed pessimistic but safe <code>rempty</code> removal</li>
+      <li>Reset sequences verified all pointers clear to zero and <code>rempty</code> asserts synchronously</li>
+      <li>Waveform inspection in Vivado used to trace Gray code transitions cycle-by-cycle across both domains</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ KEY INSIGHTS ══ -->
+  <div class="content-section fade">
+    <h2 class="sec-title">Key Design Insights</h2>
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="dc-icon">INSIGHT 01</div>
+        <div class="dc-title">RTL Simulation Hides Bugs</div>
+        <div class="dc-body">
+          Binary-pointer FIFOs appear to work perfectly in RTL simulation because
+          all bits transition simultaneously in zero time. Metastability bugs only
+          manifest in gate-level simulation with back-annotated delays &mdash; or
+          in silicon. Gray code eliminates the risk at the design level.
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="dc-icon">INSIGHT 02</div>
+        <div class="dc-title">Pessimism is Safe</div>
+        <div class="dc-body">
+          Both <code>wfull</code> and <code>rempty</code> assert on time but de-assert
+          2 synchronizer cycles late. This is intentional &mdash; holding off the sender
+          or receiver for 2 extra cycles is harmless, whereas a missed full or empty
+          detection causes data corruption.
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="dc-icon">INSIGHT 03</div>
+        <div class="dc-title">Module Partitioning Matters</div>
+        <div class="dc-body">
+          Splitting the design into single-clock-domain modules with all registered outputs
+          makes synthesis and static timing analysis straightforward. False paths can be set
+          precisely on the cross-domain signals (named with clock-domain prefixes) without
+          affecting real timing paths.
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="dc-icon">INSIGHT 04</div>
+        <div class="dc-title">Full Detection is the Hard Part</div>
+        <div class="dc-body">
+          Empty detection is a simple equality check. Full detection requires the dual n-bit
+          Gray code counter and XOR correction of the 2nd MSB before comparison, because
+          the reflected symmetry of standard Gray codes makes a naive MSB-inverted comparison
+          invalid for the full condition.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+</div>
+</main>
+
+<footer class="footer">
+  <span class="footer__copy">&copy; 2026 Apoorv Vuppulury</span>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const themeBtn = document.getElementById("themeBtn");
+  let dark = true;
+  function applyTheme(){ root.setAttribute("data-theme", dark ? "dark" : "light"); themeBtn.textContent = dark ? "[ light ]" : "[ dark ]"; }
+  applyTheme();
+  themeBtn.addEventListener("click", () => { dark = !dark; applyTheme(); });
+
+  const hdr = document.getElementById("hdr");
+  window.addEventListener("scroll", () => hdr.classList.toggle("scrolled", scrollY > 24), {passive:true});
+
+  const mobileBtn = document.getElementById("mobileBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  mobileBtn.addEventListener("click", () => {
+    const o = mobileNav.classList.toggle("open");
+    mobileBtn.setAttribute("aria-expanded", String(o));
+  });
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, {threshold: 0.06});
+  document.querySelectorAll(".fade").forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
