@@ -262,42 +262,43 @@
           <span class="chip">Science</span>
           <span class="chip">Social Science</span>
         </div>
-      </div>
     <!-- ADD this after the closing </div> of edu-card__head -->
       <p style="font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);margin-top:.5rem">
         Mathematics — <span style="color:var(--primary);font-weight:700">100%</span>
       </p>
+        
+      </div>
     </div>
   </section>
 
   <hr class="divider">
 
   <!-- ── NPTEL CERTIFICATIONS ── -->
-  <section class="wrap fade">
+  <style>
+  .nptel-item.ongoing::before { display: none; }
+</style>
+
+<section class="wrap fade">
   <p class="sec-label">certifications</p>
   <h2 class="sec-title">NPTEL Certifications</h2>
 
   <div style="font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);margin-bottom:1rem;display:flex;gap:1.5rem">
-    <span><span style="color:var(--primary)">✦</span> Completed</span>
-    <span><span style="color:var(--amber)">✦</span> Ongoing</span>
+    <span style="color:var(--primary)">✦ Completed</span>
+    <span style="color:var(--amber)">✦ Ongoing</span>
   </div>
 
   <div class="nptel-grid">
-    <!-- Completed -->
+    <!-- Completed 
     <div class="nptel-item">Embedded Systems Design</div>
     <div class="nptel-item">Digital IC Design</div>
     <div class="nptel-item">Parallel Computer Architecture</div>
     <div class="nptel-item">VLSI Physical Design</div>
 
     <!-- Ongoing -->
-    <div class="nptel-item" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">
-      <span style="color:var(--amber)">✦</span> Advanced Computer Architecture</div>
-    <div class="nptel-item" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">
-      <span style="color:var(--amber)">✦</span> IC Design for Wireless Systems</div>
-    <div class="nptel-item" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">
-      <span style="color:var(--amber)">✦</span> Memory Device Technology for AI/ML Computing</div>
-    <div class="nptel-item" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">
-      <span style="color:var(--amber)">✦</span> VLSI Physical Design with Timing Analysis</div>
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">Advanced Computer Architecture</div>
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">IC Design for Wireless Systems</div>
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">Memory Device Technology for AI/ML Computing</div>
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">VLSI Physical Design with Timing Analysis</div>
   </div>
 </section>
 
