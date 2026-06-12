@@ -157,10 +157,10 @@
   <div class="hdr__inner">
     <div class="logo">apoorv@portfolio<span class="logo__cursor"></span></div>
     <nav class="nav" aria-label="Primary">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../projects.html" class="active">Projects</a>
-      <a href="../experience.html">Experience</a>
+      <a href="../index.html#about">about</a>
+      <a href="../index.html#skills">skills</a>
+      <a href="../projects.html" class="active">projects</a>
+      <a href="../experience.html">experience</a>
       <a href="../index.html#contact">contact</a>
     </nav>
     <div class="hdr__actions">
@@ -170,11 +170,11 @@
     </div>
   </div>
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <a href="../index.html#about">About</a>
-    <a href="../index.html#skills">Skills</a>
-    <a href="../projects.html">Projects</a>
-    <a href="../experience.html">Experience</a>
-    <a href="../index.html#contact">Contact</a>
+    <a href="../index.html#about">about</a>
+    <a href="../index.html#skills">skills</a>
+    <a href="../projects.html">projects</a>
+    <a href="../experience.html">experience</a>
+    <a href="../index.html#contact">contact</a>
   </nav>
 </header>
 
@@ -186,17 +186,17 @@
   <!-- ══ HERO ══ -->
   <div class="proj-header fade">
     <h1 class="proj-title">Asynchronous<br><span class="hl">FIFO</span><br>Design</h1>
-    <div class="proj-course-tag">ECE F215 &mdash; Digital Design &nbsp;&middot;&nbsp; Design Project</div>
+    <div class="proj-course-tag">Design Project</div>
     <p class="proj-desc">
       A CDC-safe asynchronous FIFO implemented in Verilog using Gray-coded read and write pointers
       synchronized across clock domains via dual flip-flop synchronizers. Eliminates metastability
       for reliable single-word transfers between independent clock domains, verified in Xilinx Vivado.
     </p>
     <div class="proj-cta">
-  <a href="https://github.com/apoorvvuppulury7" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo &#8599;</a>
-  <a href="../FIFO.pdf" class="btn-primary" target="_blank" rel="noopener noreferrer">Reference Paper &#8599;</a>
-  <a href="../projects.html" class="btn-outline">&larr; Back to Projects</a>
-</div>
+      <a href="https://github.com/apoorvvuppulury7" class="btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo &#8599;</a>
+      <a href="../FIFO.pdf" class="btn-primary" target="_blank" rel="noopener noreferrer">Reference Paper &#8599;</a>
+      <a href="../projects.html" class="btn-outline">&larr; Back to Projects</a>
+    </div>
   </div>
 
   <hr class="divider">
@@ -246,6 +246,10 @@
         is to use <strong style="color:var(--text)">Gray-coded pointers</strong>, where only one bit changes per
         count transition, so a synchronizer has just one bit at risk per cycle rather than many.
       </p>
+    </div>
+    <div class="datapath-img-wrap" style="margin-top:1.5rem">
+      <img src="FIFO.png" alt="Binary vs Gray code pointer transitions" class="datapath-img" />
+      <p class="img-caption">Binary pointers vs Gray-coded pointers &mdash; only one bit changes per transition in Gray code, eliminating multi-bit metastability risk</p>
     </div>
   </div>
 
