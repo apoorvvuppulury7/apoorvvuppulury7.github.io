@@ -110,12 +110,16 @@
     .footer__copy{font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)}
 
     @media(max-width:720px){
-      .nav,.btn-cv{display:none}
-      .mobile-btn{display:block}
-      .exp-card__head{flex-direction:column}
-      .exp-card__body{flex-direction:column}
-      .exp-card__logo{width:44px;height:44px}
-    }
+  .nav,.btn-cv{display:none}
+  .mobile-btn{display:block}
+
+  /* Stack logo above content */
+  .exp-card__body{flex-direction:column;align-items:center}
+  .exp-card__logo{width:180px;height:120px;flex-shrink:0}
+  .exp-card__logo img{max-width:160px;max-height:100px}
+  .exp-card__content{width:100%}
+  .exp-card__head{flex-direction:column}
+}
   </style>
 </head>
 <body>
