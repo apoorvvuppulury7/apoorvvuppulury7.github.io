@@ -269,17 +269,19 @@
         
       </div>
     </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ── NPTEL CERTIFICATIONS ── -->
   <style>
   .nptel-item.ongoing::before { display: none; }
+  .nptel-item { flex-direction: column; align-items: flex-start; gap: .4rem; padding: .75rem 1rem; }
+  .nptel-item::before { margin-bottom: .1rem; }
+  .nptel-item .nptel-course { font-size: var(--t-sm); color: var(--text); font-weight: 700; }
+  .nptel-item .nptel-prof { font-size: var(--t-xs); color: var(--text-muted); }
+  .nptel-item .nptel-inst { font-size: var(--t-xs); color: var(--text-faint); }
+  .nptel-item .nptel-link { font-size: var(--t-xs); color: var(--primary); text-decoration: underline; text-underline-offset: 3px; margin-top: .2rem; }
+  .nptel-item.ongoing .nptel-course { color: var(--amber); }
+  .nptel-item.ongoing .nptel-link { display: none; }
 </style>
 
 <section class="wrap fade">
-  <p class="sec-label">certifications</p>
   <h2 class="sec-title">NPTEL Certifications</h2>
 
   <div style="font-family:var(--mono);font-size:var(--t-xs);color:var(--text-muted);margin-bottom:1rem;display:flex;gap:1.5rem">
@@ -288,20 +290,77 @@
   </div>
 
   <div class="nptel-grid">
+
     <!-- Completed 
-    <div class="nptel-item">Embedded Systems Design</div>
-    <div class="nptel-item">Digital IC Design</div>
-    <div class="nptel-item">Parallel Computer Architecture</div>
-    <div class="nptel-item">VLSI Physical Design</div>
+    <div class="nptel-item">
+      <span class="nptel-course">Embedded Systems Design</span>
+      <span class="nptel-prof">Prof. <!-- Add Professor Name --></span>
+      <span class="nptel-inst"><!-- Add Institute e.g. IIT Bombay </span>
+      <a class="nptel-link" href="#" target="_blank" rel="noopener noreferrer">View Certificate ↗</a>
+    </div>
+
+    <div class="nptel-item">
+      <span class="nptel-course">Digital IC Design</span>
+      <span class="nptel-prof">Prof. <!-- Add Professor Name --></span>
+      <span class="nptel-inst"><!-- Add Institute </span>
+      <a class="nptel-link" href="#" target="_blank" rel="noopener noreferrer">View Certificate ↗</a>
+    </div>
+
+    <div class="nptel-item">
+      <span class="nptel-course">Parallel Computer Architecture</span>
+      <span class="nptel-prof">Prof. <!-- Add Professor Name --></span>
+      <span class="nptel-inst"><!-- Add Institute </span>
+      <a class="nptel-link" href="#" target="_blank" rel="noopener noreferrer">View Certificate ↗</a>
+    </div>
+
+    <div class="nptel-item">
+      <span class="nptel-course">VLSI Physical Design</span>
+      <span class="nptel-prof">Prof. <!-- Add Professor Name --></span>
+      <span class="nptel-inst"><!-- Add Institute </span>
+      <a class="nptel-link" href="#" target="_blank" rel="noopener noreferrer">View Certificate ↗</a>
+    </div>
 
     <!-- Ongoing -->
-    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">Advanced Computer Architecture</div>
-    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">IC Design for Wireless Systems</div>
-    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">Memory Device Technology for AI/ML Computing</div>
-    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3);color:var(--amber)">VLSI Physical Design with Timing Analysis</div>
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3)">
+      <span class="nptel-course">Hardware Modeling using Verilog</span>
+      <span class="nptel-prof">Prof. Indranil Sengupta</span>
+      <span class="nptel-inst">IIT Kharagpur</span>
+    </div>
+
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3)">
+      <span class="nptel-course">Computer Architecture and Organization</span>
+      <span class="nptel-prof">Prof. Indranil Sengupta</span>
+      <span class="nptel-inst">IIT Kharagpur</span>
+    </div>
+
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3)">
+      <span class="nptel-course">Multi-Core Computer Architecture</span>
+      <span class="nptel-prof">Prof. John Jose</span>
+      <span class="nptel-inst">IIT Guwahati</span>
+    </div>
+
+    <div class="nptel-item ongoing" style="border-color:rgba(255,179,0,0.3)">
+      <span class="nptel-course">Signal Processing ALgorithms and Architectures</span>
+      <span class="nptel-prof">Prof. Anirban Dasgupta</span>
+      <span class="nptel-inst">IIT Guwahati</span>
+    </div>
+
   </div>
 </section>
 
+    <hr class="divider">
+
+<style>
+  .coursera-item { flex-direction: column; align-items: flex-start; gap: .4rem; padding: .75rem 1rem; }
+  .coursera-item::before { content: "✦"; color: #0056D2; font-size: .6rem; margin-bottom: .1rem; }
+  .coursera-item.ongoing::before { display: none; }
+  .coursera-item .nptel-course { font-size: var(--t-sm); color: var(--text); font-weight: 700; }
+  .coursera-item .nptel-prof { font-size: var(--t-xs); color: var(--text-muted); }
+  .coursera-item .nptel-inst { font-size: var(--t-xs); color: var(--text-faint); }
+  .coursera-item .nptel-link { font-size: var(--t-xs); color: #0056D2; text-decoration: underline; text-underline-offset: 3px; margin-top: .2rem; }
+  .coursera-item.ongoing .nptel-course { color: var(--amber); }
+  .coursera-item.ongoing .nptel-link { display: none; }
+</style>
 
 </main>
 
