@@ -185,6 +185,7 @@
     <div class="section-nav">
       <button class="sec-btn primary" id="btn-por" onclick="showSection('por', this)">Positions of Responsibility</button>
       <button class="sec-btn outline" id="btn-hobbies" onclick="showSection('hobbies', this)">Hobbies &amp; Interests</button>
+      <button class="sec-btn outline" id="btn-blog" onclick="showSection('blog', this)">Blog</button>
     </div>
     <p class="section-hint">Select a section above &mdash; <span>only that section</span> will appear below.</p>
 
@@ -331,7 +332,40 @@
       </div>
     </div>
 
-        <!-- ══ HOBBIES SECTION ══ -->
+       <!-- ══ BLOG SECTION ══ -->
+        <!-- ══ BLOG SECTION ══ -->
+    <div id="blog-section" class="content-section hidden">
+      <h2 class="sec-title">Blog</h2>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem">
+
+        <div class="exp-card" style="display:flex;flex-direction:column;gap:.75rem;padding:1.5rem">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">
+            <div class="exp-card__title">Why Asynchronous FIFOs Are Surprisingly Hard</div>
+            <span style="font-family:var(--mono);font-size:var(--t-xs);color:var(--text-faint)">Jun 2026</span>
+          </div>
+          <p style="font-size:var(--t-sm);color:var(--text-muted);line-height:1.7;flex:1">Most FIFO bugs never show up in simulation. They hide in the gap between RTL and silicon &mdash; and Gray code is the only thing standing between you and metastability chaos.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-top:.25rem">
+            <div class="chips"><span class="chip">VLSI</span><span class="chip">CDC</span><span class="chip">Verilog</span></div>
+            <a href="blog/async-fifo.html" style="font-family:var(--mono);font-size:var(--t-xs);color:var(--primary);letter-spacing:.04em;white-space:nowrap">read more &rarr;</a>
+          </div>
+        </div>
+
+        <div class="exp-card" style="display:flex;flex-direction:column;gap:.75rem;padding:1.5rem;opacity:.5;pointer-events:none">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">
+            <div class="exp-card__title">More Coming Soon</div>
+          </div>
+          <p style="font-size:var(--t-sm);color:var(--text-muted);line-height:1.7;flex:1">Essays and notes on hardware, signal processing, cosmology, and whatever I'm currently thinking about.</p>
+          <div style="margin-top:.25rem">
+            <div class="chips"><span class="chip">In Progress</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ HOBBIES SECTION ══ -->
+
+    <!-- ══ HOBBIES SECTION ══ -->
     <div id="hobbies-section" class="content-section hidden">
       <p class="sec-label">hobbies &amp; interests</p>
       <h2 class="sec-title">What I Do for Fun</h2>
