@@ -76,8 +76,19 @@
     .hero{padding:clamp(4rem,12vw,7rem) clamp(1.5rem,4vw,3rem) clamp(3rem,8vw,5rem);max-width:var(--content);margin-inline:auto;position:relative;z-index:1}
     .hero__name{font-family:var(--mono);font-size:var(--t-hero);font-weight:800;line-height:.95;letter-spacing:-.04em;color:var(--text);margin-bottom:1.5rem}
     .hero__name .hl{color:var(--primary)}
-    .hero__tags{display:flex;flex-wrap:nowrap;gap:.5rem;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}
-    .tag{font-family:var(--mono);font-size:var(--t-sm);padding:.35rem 1rem;background:var(--primary-faint);border:1px solid var(--border);border-radius:3px;color:var(--primary);letter-spacing:.04em}
+    .hero__tags{display:flex;flex-wrap:nowrap;gap:.6rem;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none;align-items:center;}
+    .tag{
+  font-family:var(--mono);
+  font-size:var(--t-sm);
+  padding:.4rem 1.1rem;
+  background:var(--primary-faint);
+  border:1px solid var(--border);
+  border-radius:3px;
+  color:var(--primary);
+  letter-spacing:.04em;
+  white-space:nowrap;
+  min-width:max-content;
+}
     .tag.muted{background:transparent;color:var(--text-muted);border-color:var(--border-dim)}
     .tag.amber{background:rgba(255,179,0,0.08);color:var(--amber);border-color:rgba(255,179,0,0.2)}
     .hero__cta{display:flex;gap:.75rem;flex-wrap:wrap}
