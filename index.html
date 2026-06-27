@@ -83,9 +83,10 @@
     .btn-outline{font-family:var(--mono);font-size:var(--t-xs);padding:.7rem 1.5rem;border:1px solid var(--border);border-radius:var(--r);color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;transition:color var(--ease),border-color var(--ease)}
     .btn-outline:hover{color:var(--primary);border-color:var(--border)}
 
-    .hero__status{font-family:var(--mono);font-size:var(--t-sm);color:var(--text-muted);margin-top:1.25rem;display:flex;align-items:center;gap:.6rem;letter-spacing:.03em}
-    .hero__status .sdot{width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block;flex-shrink:0;animation:pulse 2.5s ease-in-out infinite}
-    .hero__status .co{color:var(--primary);font-weight:700;font-size:var(--t-base);letter-spacing:.02em}
+    /* Employment status — AMBER, bigger */
+    .hero__status{font-family:var(--mono);font-size:var(--t-base);color:var(--text-muted);margin-top:1.25rem;display:flex;align-items:center;gap:.7rem;letter-spacing:.03em}
+    .hero__status .sdot{width:9px;height:9px;border-radius:50%;background:var(--amber);display:inline-block;flex-shrink:0;animation:pulse 2.5s ease-in-out infinite}
+    .hero__status .co{color:var(--amber);font-weight:700;font-size:var(--t-lg);letter-spacing:.02em}
 
     .about__body p{color:var(--text-muted);line-height:1.8;max-width:72ch}
     .about__body p+p{margin-top:1rem}
@@ -176,7 +177,6 @@
 
 <main id="main">
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero__layout">
 
@@ -215,7 +215,6 @@
 
   <hr class="divider">
 
-  <!-- ABOUT -->
   <section class="wrap fade" id="about">
     <h2 class="sec-title">Who I Am</h2>
     <div class="about__body">
@@ -234,7 +233,6 @@
 
   <hr class="divider">
 
-  <!-- SKILLS -->
   <section class="wrap fade" id="skills">
     <p class="sec-label">skills</p>
     <h2 class="sec-title">What I work with</h2>
@@ -315,7 +313,6 @@
 
   <hr class="divider">
 
-  <!-- CONTACT -->
   <section class="wrap fade" id="contact">
     <p class="sec-label">contact</p>
     <h2 class="sec-title">Get in touch</h2>
@@ -355,7 +352,6 @@
 </footer>
 
 <script>
-  // Theme toggle
   const root = document.documentElement;
   const themeBtn = document.getElementById("themeBtn");
   let dark = true;
@@ -366,11 +362,9 @@
   applyTheme();
   themeBtn.addEventListener("click", () => { dark = !dark; applyTheme(); });
 
-  // Sticky header
   const hdr = document.getElementById("hdr");
   window.addEventListener("scroll", () => hdr.classList.toggle("scrolled", scrollY > 24), {passive:true});
 
-  // Mobile nav
   const mobileBtn = document.getElementById("mobileBtn");
   const mobileNav = document.getElementById("mobileNav");
   mobileBtn.addEventListener("click", () => {
@@ -379,20 +373,17 @@
   });
   mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
 
-  // Scroll fade-in
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
   }, {threshold: 0.06});
   document.querySelectorAll(".fade").forEach(el => io.observe(el));
 
-  // Typewriter: roll down -> hold 60s -> roll up -> hold 5s -> repeat
   (function () {
     const lines = [
       { id: "tl1", text: "Curious Tinkerer." },
       { id: "tl2", text: "Electronics Engineer." },
       { id: "tl3", text: "From ICs to Satellites." }
     ];
-
     const TYPE_SPEED  = 55;
     const ERASE_SPEED = 30;
     const PAUSE_LINE  = 400;
